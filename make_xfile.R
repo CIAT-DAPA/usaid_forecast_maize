@@ -360,51 +360,52 @@ Xfile <- function(information, pixel, initial) {
     cat("\n",file=pf)
     
     #initial conditions
-    #cat("*INITIAL CONDITIONS\n",file=pf)
-    #cat("@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME\n",file=pf)
-    #cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_properties$C))," ",sprintf("%5s",in_data$ini_cond_properties$PCR),
-    #          " ",sprintf("%5s",in_data$ini_cond_properties$ICDAT)," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRT)),
-    #          " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICND))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRN)),
-    #          " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRE))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICWD)),
-    #          " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRES))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICREN)),
-    #          " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICREP))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRIP)),
-    #          " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRID))," ",sprintf("%-12s",in_data$ini_cond_properties$ICNAME),
-    #          "\n",sep=""),file=pf)
-    #cat("@C  ICBL  SH2O  SNH4  SNO3\n",file=pf)
-    #for (i in 1:nrow(in_data$ini_cond_profile)) {
-    #  cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_properties$C))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$ICBL[i])),
-    #            " ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SH2O[i]))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SNH4[i])),
-    #            " ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SNO3[i])),"\n",sep=""),file=pf)
-    #}
-    #cat("\n",file=pf)
+    cat("*INITIAL CONDITIONS\n",file=pf)
+    cat("@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME\n",file=pf)
+    cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_properties$C))," ",sprintf("%5s",in_data$ini_cond_properties$PCR),
+             " ",sprintf("%5s",in_data$ini_cond_properties$ICDAT)," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRT)),
+             " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICND))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRN)),
+             " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRE))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICWD)),
+             " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRES))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICREN)),
+             " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICREP))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRIP)),
+             " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRID))," ",sprintf("%-12s",in_data$ini_cond_properties$ICNAME),
+             "\n",sep=""),file=pf)
+    cat("@C  ICBL  SH2O  SNH4  SNO3\n",file=pf)
+    
+    for (i in 1:nrow(in_data$ini_cond_values)) {
+     cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_properties$C))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$ICBL[i])),
+               " ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SH2O[i]))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SNH4[i])),
+               " ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SNO3[i])),"\n",sep=""),file=pf)
+    }
+    cat("\n",file=pf)
     
      # Initial Conditions
-     if(exists("ini_cond")) {
+     # if(exists("ini_cond")) {
+     # 
+     #   cat("*INITIAL CONDITIONS\n", file = pf)
+     #   cat("@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME\n", file = pf)
+     #   cat(sprintf("%2d %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %2s", 1, "MZ", -99, 1, -99, 1, 1, -99,  -99, -99, -99, -99, -99, -99), "\n", file = pf)
+     # 
+     #   cat("@C  ICBL  SH2O  SNH4  SNO3\n", file = pf)
+     #   for(i in 1:dim(ini_cond)[1]){
+     # 
+     #     if(information$system  == "rainfed"){
+     #       ## CAmbio en las Condiciones iniciales de Nitrogeno 5 Octubre 2015
+     #       #cat(paste(sprintf("%2d %5d %5.2f %5.2f %5.2f", 1, in_conditions[i, 1], in_conditions[i, 2], SNH4[i], SNO3[i])), "\n", file = pf)
+     #       cat(paste(sprintf("%2d %5d %5d %5.2f %5.2f", 1, ini_cond[i, 'SLB'], ini_cond[i, 'SDUL'], ini_cond[i, 'SLOC'], ini_cond[i , 'SLOC'])), "\n", file = pf)
+     #       
+     #     }
+     # 
+     #     if(information$system  == "irrigation"){
+     #       #cat(paste(sprintf("%2d %5d %5.0f %5.2f %5.2f", 1, in_conditions[i, 1], in_conditions[i, 2], SNH4[i], SNO3[i])), "\n", file = pf)
+     #       cat(paste(sprintf("%2d %5d %5.2f %5.2f %5.2f", 1, ini_cond[i, 'SLB'], ini_cond[i, 'SDUL'], ini_cond[i, 'SLOC'], ini_cond[i , 'SLOC'])), "\n", file = pf)
+     #     }
+     # 
+     # 
+     #   }
     
-       cat("*INITIAL CONDITIONS\n", file = pf)
-       cat("@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME\n", file = pf)
-       cat(sprintf("%2d %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %2s", 1, "MZ", -99, 1, -99, 1, 1, -99,  -99, -99, -99, -99, -99, -99), "\n", file = pf)
     
-       cat("@C  ICBL  SH2O  SNH4  SNO3\n", file = pf)
-       for(i in 1:dim(ini_cond)[1]){
-    
-         if(information$system  == "rainfed"){
-           ## CAmbio en las Condiciones iniciales de Nitrogeno 5 Octubre 2015
-           #cat(paste(sprintf("%2d %5d %5.2f %5.2f %5.2f", 1, in_conditions[i, 1], in_conditions[i, 2], SNH4[i], SNO3[i])), "\n", file = pf)
-           cat(paste(sprintf("%2d %5d %5d %5.2f %5.2f", 1, ini_cond[i, 'SLB'], ini_cond[i, 'SDUL'], ini_cond[i, 'SLOC'], ini_cond[i , 'SLOC'])), "\n", file = pf)
-           
-         }
-    
-         if(information$system  == "irrigation"){
-           #cat(paste(sprintf("%2d %5d %5.0f %5.2f %5.2f", 1, in_conditions[i, 1], in_conditions[i, 2], SNH4[i], SNO3[i])), "\n", file = pf)
-           cat(paste(sprintf("%2d %5d %5.2f %5.2f %5.2f", 1, ini_cond[i, 'SLB'], ini_cond[i, 'SDUL'], ini_cond[i, 'SLOC'], ini_cond[i , 'SLOC'])), "\n", file = pf)
-         }
-    
-    
-       }
-    
-    
-     }
+     # }
     
     
     
@@ -428,10 +429,10 @@ Xfile <- function(information, pixel, initial) {
     cat("@F FDATE  FMCD  FACD  FDEP  FAMN  FAMP  FAMK  FAMC  FAMO  FOCD FERNAME                       \n", file = pf)
     
     for(i in 1:dim(in_data$fertilizer)[1]){
-      
-      cat(paste(sprintf("%2d %5i %5s %5s %5i %5i %5i %5i %5i %5i %5i %5-i", 1, in_data$fertilizer$FDATE[i], in_data$fertilizer$FMCD[i],
-                        in_data$fertilizer$FACD[i],  in_data$fertilizer$FDEP[i], in_data$fertilizer$FAMN[i],  in_data$fertilizer$FAMP[i],
-                        in_data$fertilizer$FAMK[i],  in_data$fertilizer$FAMC[i],  in_data$fertilizer$FAMO[i],
+    
+      cat(paste(sprintf("%2d %5i %5s %5i %5i %5.2f %5.2f %5.2f %5i %5i %5i %5-i", 1, in_data$fertilizer$FDATE[i], in_data$fertilizer$FMCD[i],
+                        in_data$fertilizer$FACD[i], in_data$fertilizer$FDEP[i], in_data$fertilizer$FAMN[i], in_data$fertilizer$FAMP[i], 
+                        in_data$fertilizer$FAMK[i], in_data$fertilizer$FAMC[i], in_data$fertilizer$FAMO[i], 
                         in_data$fertilizer$FOCD[i], in_data$fertilizer$FERNAME[i]), '\n'), file = pf)
       
     }
@@ -535,8 +536,13 @@ Xfile <- function(information, pixel, initial) {
     #output
     return(out_file)
   }
+  
   make_xfile(in_data, out_file = information$name, overwrite = T)
 }
+
+
+
+
 
 
 
