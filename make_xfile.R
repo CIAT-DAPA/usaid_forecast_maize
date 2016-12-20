@@ -1,23 +1,50 @@
-## Funcion para crear x-file DSSAT v 4.6 para calibrar
 
-
-## Funcion para crear x-file DSSAT v 4.6 para calibrar
-
+## Function to make x-file for DSSAT v4.6 from code R
 
 
 # To test
 
 information <- list()
 
-# TREATMENTS
-# La lista de tratamientos no es necesario modificarla por ahora (dejar tal como sigue)
-# *TREATMENTS                        -------------FACTOR LEVELS------------
-# @N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM
-# 1 1 0 0 P1                         1  1  0  1  1  1  1  0  0  0  0  1  1
+## Fields
+information$NYERS <- 20 ## Years for simulation
+information$name <- 'CALB.MZX' # Only specify four characters  an then .MZX or depend to crop
+information$exp_details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B'
+information$WSTA <- 'CCCR8000'  ## add with year of start simulation
+information$ID_SOIL <- 'CCBuga0001' # name of ID soil
+information$smodel <- 'MZCER045' # model to use
+
+## Cultivars
+
+information$INGENO <- 'CI0027'
+information$CR <- 'MZ'
+information$CNAME <- 'USAID_Union'
 
 
-information$PDATE <- 15286
-information$EDATE <- 15293
+
+
+
+## data frame to Initial Conditions
+# ICDAT the same from PDATE (planting date)
+# *INITIAL CONDITIONS
+# @C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME
+# 1    MZ 80085   -99     0     1     1   -99     0     0     0   100    15 -99
+
+
+information$ICBL <- c(25, 45, 95)
+information$SH20 <- -99
+information$SNH4 <- c(4.2, 4.4, 4.5)
+information$SNO3 <- c(11.9, 12.4, 7.6)
+
+# Planting Details
+
+
+## doing a comment that explain all parameters
+information$PDATE <- 80092
+information$SDATE <- pmax(information$PDATE - 20, 0)   ## Starting simulation
+information$plant <- 'R'  # R = planting on reporting date
+## Remember Simulation date starts 20 days before planting date
+information$EDATE <- -99
 information$PPOP <- 6.25
 information$PPOE <- 6.25
 information$PLME <- 'S'
@@ -27,40 +54,24 @@ information$PLRD <- 90
 information$PLDP <- 4
 ## Variables como PLWT, PAGE, PENV, PLPH, SPRL con -99
 
-## Nombre del cultivar
-information$INGENO <- 'CI0027'
-information$CR <- 'MZ'
-information$CNAME <- 'MZNA'
 
+## Date of application of irrigation
 
-## Indicar nombre del suelo a utilizar
-information$ID_SOIL <- ''
-information$smodel <- 'MZCER045'
-information$plant <- 'R'
-
-## Aplicacion de Riego con fecha 
-information$IRR <- 'R'  ## R en la fecha reportada, A Riego automatico, N No se aplica riego
-information$IROP <- 'IR001'
+information$IRRIG <- 'R'  ## R on reporting date, A automatically irragated, N Nothing
+information$IROP <- 'IR001'  ## 
 information$IDATE <- c(15289, 15293, 15296, 15304, 15345, 15362, 16020, 16036)
 information$IRVAL <- c(36, 35.59, 39.53, 21.13, 27.77, 32.65, 37.10, 41.47)
 
 
-information$name <- 'CALB1502.MZX'
-information$exp_details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B'
-information$pfrst <- 15239
-information$plast <- 15249
-information$IC <- 1 # 1 = True or  0 = False  (Condiciones iniciales)
 
+# if is necessary to specify sowing dates 
+information$pfrst <- -99
+information$plast <- -99
+information$IC <- 1 # 1 = True or  0 = False  (when you want to use Initial Condigions)
+information$system <- 'irrigation'  ## Solo se habilita con IC = 1 (irrigation es como condiciones inicial del suelo menos drasticas)
 
-## Tabla para las condiciones iniciales
+## Fertilizers
 
-information$ICBL <- c(25, 45, 95)
-information$SH20 <- -99
-information$SNH4 <- c(4.2, 4.4, 4.5)
-information$SNO3 <- c(11.9, 12.4, 7.6)
-
-
-## Fertilizacion
 information$FDATE = c(21, 21, 35, 35, 58)  ## Dias de la aplicacion +
 information$FMCD = c('FE006', 'FE016', 'FE005', 'FE016', 'FE005') ## Investigar acerca de este parametro
 information$FACD = 'AP002' ## Investigar acerca de este parametro
@@ -72,62 +83,90 @@ information$FAMC = 0
 information$FAMO = 0
 information$FOCD = 0
 information$FERNAME = -99
+information$FERTI = 'D' ## D = dias despues de la siembra
 
 
 
 
 
+## Maybe to add a function recognice when SDATE = 0 so this function should a new clima datasets for repet the same year of 
+## Simulation only for start simulation another year (the last of the first year)
 
-Xfile <- function(information, pixel, initial, size) {
+Xfile <- function(information, pixel, initial) {
   
   
-  ID_SOIL <- information$ID_SOIL[pixel]
+  # Cultivars
   
-  ## Todo esto puede estar por pixel o fijo
+  INGENO <- information$INGENO 
+  CR <- information$CR
+  CNAME <- information$CNAME
+
+  ## Fields
   
-  # PDATE <- information$PDATE[pixel]   
-  # SDATE <- pmax(information$PDATE[pixel] - 15, 0)
-  # PPOP <- information$PPOP[pixel]
-  # PPOE <- information$PPOE[pixel]
-  # PLME <- paste(information$PLME[pixel])
-  # PLDS <- paste(information$PLDS[pixel])
-  # PLRD <- information$PLRD[pixel]  
-  # PLDP <- information$PLDP[pixel] 
-  # INGENO = information$INGENO[pixel] 
+  WSTA <- information$WSTA
+  ID_SOIL <- information$ID_SOIL
+  SMODEL <- paste(information$smodel)
+  
+  ## Initial Conditions Must be a data frame
+  
+  
+  ICBL <- information$ICBL
+  SH20 <- information$SH20
+  SNH4 <- information$SNH4
+  SNo3 <- information$SNO3
+  
+  # Planting Details
   
   PDATE <- information$PDATE   
-  SDATE <- pmax(information$PDATE - 8, 0)
+  PLANT <- information$plant
+  ## Maybe to add a function recognice when SDATE = 0 so this function should a new clima datasets for repet the same year of 
+  ## Simulation only for start simulation another year (the last of the first year)
+  SDATE <- information$SDATE
   PPOP <- information$PPOP
   PPOE <- information$PPOE
   PLME <- paste(information$PLME)
   PLDS <- paste(information$PLDS)
   PLRD <- information$PLRD 
   PLDP <- information$PLDP 
-  INGENO = information$INGENO 
   
-  CR = information$CR
-  CNAME = information$CNAME
-  C = 1
-  SMODEL = paste(information$smodel)
-  PLANT = information$plant
-  IRRIG = information$IRR
-  PFRST = information$pfrst
-  PLAST = information$plast
-  system = information$system
-  IC = information$IC
-  FMCD = information$FMCD
+  
+  ## Date of application of irrigation
+
+  IRRIG <- information$IRRIG
+  IROP <- information$IROP
+  IDATE <- information$IDATE
+  IRVAL <- information$IRVAL
+  
+  
+  
+  ## Fertilizers
+  
+  
+  FDATE <- information$FDATE
+  FMCD <- information$FMCD
   FACD = information$FACD
   FDEP = information$FDEP
   FAMN = information$FAMN
-  FDATE = information$FDATE
   FAMP = information$FAMP
+  FAMK = information$FAMK
+  FAMC = information$FAMC
+  FAMO = information$FAMO
+  FOCD = information$FOCD
+  FERNAME = information$FERNAME
   FERTI = information$FERTI
-  # FAMK = information$FAMK
-  # FAMC = information$FAMC
-  # FAMO = information$FAMO
-  # FOCD = information$FOCD
-  # FERNAME = information$FERNAME
+  
+  ### AUTOMATIC MANAGEMENT
+  
+  PFRST <-  information$pfrst
+  PLAST <- information$plast
+  
+  
+  # C = 1  ## What is C??
+  
   # PLANTING = A
+  
+  IC <- information$IC 
+  NYERS <- information$NYERS
   
   
   ## Defining the Experiment
@@ -136,20 +175,20 @@ Xfile <- function(information, pixel, initial, size) {
   
   ## General data of the Experiment
   
-  in_data$general <- list(PEOPLE = "Diego Obando, Jesus Martinez and Jeison Mesa", ADDRESS = "CIAT", SITE = "CALI")
+  in_data$general <- list(PEOPLE = "Leonardo Ordoñez and Jeison Mesa", ADDRESS = "CIAT", SITE = "CALI")
   
   
   ## Definition simulate treatment
-  in_data$treatments <- data.frame(N = 1:size, R = 1, O = 1, C = 0, TNAME = "COR001", CU = 1, FL = 1:size, SA = 0, IC = IC, MP = 1,
+  in_data$treatments <- data.frame(N = 1, R = 1, O = 0, C = 0, TNAME = "USAID", CU = 1, FL = 1, SA = 0, IC = IC, MP = 1,
                                    MI = 0, MF = 1, MR = 0, MC = 0, MT = 0, ME = 0, MH = 0, SM = 1)
   
   ## Definition simulate cultivar
   
-  in_data$cultivars <- data.frame(C, CR, INGENO, CNAME)
+  in_data$cultivars <- data.frame(C = 1 , CR, INGENO, CNAME)
   
   ## Field
   
-  in_data$fields <- data.frame(L = 1:size, ID_FIELD = "CORM", WSTA = paste0(c(paste0('CORM01', '0', 1:9), paste0('CORM01', 10:99))), FLSA=-99, FLOB = -99, FLDT = "DR000",
+  in_data$fields <- data.frame(L = 1, ID_FIELD = "USAID", WSTA, FLSA = -99, FLOB = -99, FLDT = "DR000",
                                FLDD = -99, FLDS = -99, FLST = -99, SLTX = -99, SLDP = -99, ID_SOIL,
                                FLNAME = "FIELD01", XCRD = -99, YCRD = -99, ELEV = -99, AREA = -99, SLEN=-99,
                                FLWR = -99, SLAS = -99, FLHST = -99, FHDUR=-99)
@@ -165,18 +204,29 @@ Xfile <- function(information, pixel, initial, size) {
   #                                       SNO3=rep(-99,5))
   
   
+  ## Initial Conditions
+  
+  in_data$ini_cond_field <- data.frame(C = 1, PCR = information$CR, ICDAT = PDATE, ICRT = -99, ICND = -99, ICRN = -99, ICRE = -99,
+                                  ICWD = -99, ICRES = -99, ICREN = -99, ICREP = -99, ICRIP = -99, ICRID = -99,
+                                  ICNAME = -99)
+  
+  in_data$ini_cond_values <- data.frame(C= rep(1,length(SNH4)),ICBL, SH20,SNH4,
+                                        SNo3)
+  
+  ## Fetilizer Details
+  # print('Here')
+  in_data$fertilizer <- data.frame(F = 1, FDATE, FMCD, FACD, FDEP, FAMN, FAMP, FAMK,
+                                   FAMC, FAMO, FOCD, FERNAME)
+  
   ## Planting Details
   in_data$planting <- data.frame( P = 1, PDATE, EDATE = -99, PPOP, PPOE, PLME, 
                                   PLDS, PLRS = 80, PLRD, PLDP,
                                   PLWT = -99, PAGE = -99, PENV = -99, PLPH = -99, SPRL = -99)
   
-  ## Fetilizer Details
-  # print('Here')
-  in_data$fertilizer <- data.frame(F = 1, FDATE, FMCD, FACD, FDEP, FAMN, FAMP, FAMK = -99,
-                                   FAMC = -99, FAMO = -99, FOCD = -99, FERNAME = -99)
+
   
   ## Simulation Control 
-  in_data$sim_ctrl <- data.frame(N = 1, GENERAL = "GE", NYERS = 1, NREPS = 1, START = "S", SDATE, 
+  in_data$sim_ctrl <- data.frame(N = 1, GENERAL = "GE", NYERS, NREPS = 1, START = "S", SDATE, 
                                  RSEED = 2150, SNAME = "simctr1", SMODEL, 
                                  OPTIONS = "OP", WATER = "Y", NITRO = "Y", SYMBI = "N",
                                  PHOSP = "N", POTAS = "N", DISES = "N", CHEM = "N", TILL = "N", 
@@ -200,11 +250,7 @@ Xfile <- function(information, pixel, initial, size) {
   
   
   
-  if(IC == 1 ) {
-    
-    ini_cond <- data.frame(initial_conditions_mod('SOIL.SOL', system))
-    
-  }
+
   
   # Make Xfile
   
