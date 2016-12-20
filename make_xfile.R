@@ -6,6 +6,12 @@
 
 information <- list()
 
+## Parameters to organize then 
+
+information$NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
+information$WATER <- 'Y'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
+
+
 ## Fields
 information$NYERS <- 20 ## Years for simulation
 information$name <- 'CALB.MZX' # Only specify four characters  an then .MZX or depend to crop
@@ -167,6 +173,9 @@ Xfile <- function(information, pixel, initial) {
   
   IC <- information$IC 
   NYERS <- information$NYERS
+  NITRO <- information$NITRO 
+  WATER <- information$WATER 
+  
   
   
   ## Defining the Experiment
@@ -228,9 +237,9 @@ Xfile <- function(information, pixel, initial) {
   ## Simulation Control 
   in_data$sim_ctrl <- data.frame(N = 1, GENERAL = "GE", NYERS, NREPS = 1, START = "S", SDATE, 
                                  RSEED = 2150, SNAME = "simctr1", SMODEL, 
-                                 OPTIONS = "OP", WATER = "Y", NITRO = "Y", SYMBI = "N",
+                                 OPTIONS = "OP", WATER, NITRO, SYMBI = "N",
                                  PHOSP = "N", POTAS = "N", DISES = "N", CHEM = "N", TILL = "N", 
-                                 CO2 = "M", METHODS = "ME", WTHER = "G", INCON = "M", LIGHT = "E", 
+                                 CO2 = "M", METHODS = "ME", WTHER = "M", INCON = "M", LIGHT = "E", 
                                  EVAPO = "R", INFIL = "S", PHOTO = "C", HYDRO = "R",
                                  NSWIT = 1, MESOM = "G", MESEV = "S", MESOL =2, MANAGEMENT = "MA", 
                                  PLANT, IRRIG,
