@@ -373,9 +373,8 @@ Xfile <- function(information, pixel, initial) {
     cat("@C  ICBL  SH2O  SNH4  SNO3\n",file=pf)
     
     for (i in 1:nrow(in_data$ini_cond_values)) {
-     cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_properties$C))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$ICBL[i])),
-               " ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SH2O[i]))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SNH4[i])),
-               " ",sprintf("%5.0f",as.integer(in_data$ini_cond_profile$SNO3[i])),"\n",sep=""),file=pf)
+      cat(paste(sprintf("%2d %5d %5d %5.2f %5.2f", 1, in_data$ini_cond_values[i, 'ICBL'], in_data$ini_cond_values[i, 'SH20'],
+                        in_data$ini_cond_values[i, 'SNH4'], in_data$ini_cond_values[i , 'SNo3'])), "\n", file = pf)
     }
     cat("\n",file=pf)
     
