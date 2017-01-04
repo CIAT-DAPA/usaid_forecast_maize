@@ -276,3 +276,121 @@ make_xfile <- function(in_data, out_file, overwrite = F) {
   #output
   return(out_file)
 }
+
+
+
+
+
+## Change the next lines for new initial conditions
+## make parameter for condiciones iniciales upper limit or lower limit (since looks wilt point)
+## add C function tu use multiple opciones is required during to run DSSAT
+## add read soil information from (file SOIL) to determine de upper limit for initial conditions
+## test
+## out_file <- "./JBID.RIX"
+# overwrite <- F
+
+if (file.exists(out_file)) {
+  if (overwrite) {
+    pf <- file(out_file, open = "w")
+  } else {
+    rnum <- round(runif(1, 10000, 20000), 0)
+    tmpvar <- unlist(strsplit(out_file, "/", fixed = T))
+    pth_ref <- paste(tmpvar[1:(length(tmpvar) - 1)], collapse = "/")
+    out_file <- paste(pth_ref, "/copy-", rnum, "_", tmpvar[length(tmpvar)], sep = "")
+    pf <- file(out_file, open = "w")
+  }
+} else {
+  pf <- file(out_file,open="w")
+}
+
+# close(pf)
+
+
+for (i in 1:nrow(in_data$ini_cond_values)) {
+  
+  # cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_values$C)), " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$ICBL[i])),
+  #           " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SH2O[i]))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SNH4[i])),
+  #           " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SNO3[i])),"\n",sep=""),file=pf)
+  # 
+  # 
+  if(information$wilting_point  == "lower_limit"){
+    
+    cat(paste(sprintf("%2d %5d %5d %5.2f %5.2f", 1, in_data$ini_cond_values[i, 'ICBL'], in_data$ini_cond_values[i, 'SH20'],
+                      in_data$ini_cond_values[i, 'SNH4'], in_data$ini_cond_values[i , 'SNo3'])), "\n", file = pf)
+    
+  }
+  
+  if(information$wilting_point  == "upper_limit"){
+    
+    ## is necessary to read the information about SOIL file to identify upper limit so it is SDUL var in SOIL 
+    
+  }
+  
+  
+}
+
+
+
+### All functions for X-file (modules)
+
+
+## make the archive
+## if the file exist this funcion make a diferent copy
+
+
+make_archive <- function(out_file, overwrite = F, encoding){
+  
+  options(encoding = encoding) 
+  
+  if (file.exists(out_file)) {
+    if (overwrite) {
+      pf <- file(out_file, open = "w")
+    } else {
+      rnum <- round(runif(1, 10000, 20000), 0)
+      tmpvar <- unlist(strsplit(out_file, "/", fixed = T))
+      pth_ref <- paste(tmpvar[1:(length(tmpvar) - 1)], collapse = "/")
+      out_file <- paste(pth_ref, "/copy-", rnum, "_", tmpvar[length(tmpvar)], sep = "")
+      pf <- file(out_file, open = "w")
+    }
+  } else {
+    pf <- file(out_file, open ="w")
+  }
+  
+  
+  
+  # close(pf)
+  return(pf)
+}
+
+## test
+# out_file <- "./JBID.RIX"
+# overwrite <- F
+
+# proof generate the connection between R and the file pf into de function make_archive
+# proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8")
+
+# cat('Whatever', file = proof)
+# close(proof)
+
+## this function needs a name of experiment, is a header for de x-file
+## make general stuff
+
+make_details <- function(name_exp, information){
+  
+  
+  # General stuff
+  
+  cat(paste0(information$exp_details, "\n"), file = name_exp)
+  cat("\n",file = name_exp)
+  cat("*GENERAL\n@PEOPLE\n", file = name_exp)
+  cat(paste(sprintf("%-12s", as.character(in_data$general$PEOPLE)), "\n", sep = ""), file = name_exp)
+  cat("@ADDRESS\n", file = name_exp)
+  cat(paste(sprintf("%-12s", as.character(in_data$general$ADDRESS)), "\n", sep = ""), file = name_exp)
+  cat("@SITE\n", file = name_exp)
+  cat(paste(sprintf("%-12s", as.character(in_data$general$SITE)), "\n", sep = ""), file = name_exp)
+  
+}
+
+# make_details(proof, information)
+# close(proof)
+
