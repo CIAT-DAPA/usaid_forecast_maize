@@ -283,12 +283,14 @@ Xfile <- function(information, pixel, initial) {
       pf <- file(out_file,open="w")
     }
     
-    #write header and stuff
-    #pf <- file(out_file,open="w")
+    # Write header and stuff
+    # pf <- file(out_file,open="w")
+    
     cat(paste0(information$exp_details, "\n"), file = pf)
     cat("\n",file = pf)
     
-    #general stuff
+    # General stuff
+    
     cat("*GENERAL\n@PEOPLE\n", file = pf)
     cat(paste(sprintf("%-12s", as.character(in_data$general$PEOPLE)), "\n", sep = ""), file = pf)
     cat("@ADDRESS\n", file = pf)
@@ -296,7 +298,7 @@ Xfile <- function(information, pixel, initial) {
     cat("@SITE\n", file = pf)
     cat(paste(sprintf("%-12s", as.character(in_data$general$SITE)), "\n", sep = ""), file = pf)
     
-    #treatments
+    # Treatments
     cat("*TREATMENTS                        -------------FACTOR LEVELS------------\n", file = pf)
     cat("@N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM\n", file = pf)
     for (i in 1:nrow(in_data$treatments)) {
@@ -314,7 +316,7 @@ Xfile <- function(information, pixel, initial) {
     }
     cat("\n", file = pf)
     
-    #cultivars
+    # cultivars
     cat("*CULTIVARS\n", file = pf)
     cat("@C CR INGENO CNAME\n", file = pf)
     for (i in 1:nrow(in_data$cultivars)) {
@@ -324,7 +326,7 @@ Xfile <- function(information, pixel, initial) {
     }
     cat("\n", file = pf)
     
-    #fields
+    # fields
     cat("*FIELDS\n", file = pf)
     cat("@L ID_FIELD WSTA....  FLSA  FLOB  FLDT  FLDD  FLDS  FLST SLTX  SLDP  ID_SOIL    FLNAME\n", file = pf)
     for (i in 1:nrow(in_data$treatments)) { 
@@ -529,10 +531,12 @@ Xfile <- function(information, pixel, initial) {
               " ",sprintf("%5d",as.integer(in_data$auto_mgmt$HPCNP))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$HPCNR)),
               "\n",sep=""),file=pf)
     
+    
     #close file
     close(pf)
     
     #output
+    
     return(out_file)
   }
   
