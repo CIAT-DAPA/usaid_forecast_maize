@@ -44,8 +44,7 @@ make_details <- function(DETAILS, PEOPLE){
 
 
 make_treatments <- function(IC, MI, MF, MH){
-  
-  
+
   # Treatments
   
   # *TREATMENTS                        -------------FACTOR LEVELS------------
@@ -59,23 +58,9 @@ make_treatments <- function(IC, MI, MF, MH){
   
   return(treatments)
   
-  # cat("*TREATMENTS                        -------------FACTOR LEVELS------------\n", file = pf)
-  # cat("@N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM\n", file = pf)
-  # for (i in 1:nrow(in_data$treatments)) {
-  #   
-  #   cat(paste(sprintf("%1$2d%2$2d%3$2d%4$2d",as.integer(in_data$treatments$N[i]),as.integer(in_data$treatments$R[i]),
-  #                     as.integer(in_data$treatments$O[i]),as.integer(in_data$treatments$C[i])),
-  #             " ",sprintf("%1$-25s%2$3d%3$3d%4$3d%5$3d%6$3d%7$3d%8$3d%9$3d%10$3d%11$3d%12$3d%13$3d%14$3d",in_data$treatments$TNAME[i],
-  #                         as.integer(in_data$treatments$CU[i]),as.integer(in_data$treatments$FL[i]),as.integer(in_data$treatments$SA[i]),
-  #                         as.integer(in_data$treatments$IC[i]),as.integer(in_data$treatments$MP[i]),as.integer(in_data$treatments$MI[i]),
-  #                         as.integer(in_data$treatments$MF[i]),as.integer(in_data$treatments$MR[i]),as.integer(in_data$treatments$MC[i]),
-  #                         as.integer(in_data$treatments$MT[i]),as.integer(in_data$treatments$ME[i]),as.integer(in_data$treatments$MH[i]),
-  #                         as.integer(in_data$treatments$SM[i])),
-  #             "\n", sep = ""), file = pf)
-  #   
-  # }
-  # cat("\n", file = pf)
-  
 }
 
 # make_treatments(IC, MI, MF, MH)
+
+
+

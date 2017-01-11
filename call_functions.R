@@ -1,4 +1,69 @@
 ## 
+## It's necessary to has the functions with pipeline and without it
+
+
+library(dplyr)
+
+## Parameters necessary to write experimental file
+
+out_file <- "./JBID.MZX"
+overwrite <- F
+details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B'
+people <- "Leonardo Ordoñez and Jeison Mesa"
+
+IC <- 1
+MI <- 0
+MF <- 1
+MH <- 0
+
+
+
+## Conexion to write experimental file, maybe is better to write a function to write all parameters
+
+proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
+
+write_details(proof, make_details())
+write_treatments(proof, make_treatments(IC, MI, MF, MH))
+
+
+
+
+##  add fucntion to close write
+
+close(proof)
+
+
+make_archive(out_file, overwrite = F,  encoding = "UTF-8") %>%
+  write_details(make_details()) %>%
+  close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Run make X-file
 # Is necessary to write the  x-file automatically then the next lines make a routine to call the function make_xfile
