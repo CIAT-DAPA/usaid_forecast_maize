@@ -62,5 +62,19 @@ make_treatments <- function(IC, MI, MF, MH){
 
 # make_treatments(IC, MI, MF, MH)
 
+# Parameters
+CR <- 'MZ'    # Crop Code, you need to search this parameter for de manual DSSAT (its different by crop)
+INGENO <- 'CI0027' # Cultivar indentifier, this is the code for cultivar to run depend of crop
+CNAME <- 'PIO 30F35HRB_'  # Whatever code to identify the cultivar ran, maybe no too long string
 
+make_cultivars <- function(CR, INGENO, CNAME){
+  
+  
+  cultivars <- data.frame(C = 1 , CR, INGENO, CNAME)
+  
+  return(cultivars)
+  
+}
+
+make_cultivars(CR, INGENO, CNAME)
 

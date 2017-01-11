@@ -81,8 +81,22 @@ write_treatments <- function(name_exp, information){
   
 }
 
-# information <- make_treatments(IC, MI, MF, MH)
 # write_details(proof,  make_treatments(IC, MI, MF, MH))
 # close(proof)
 
+write_cultivars <- function(name_exp, information){
+  
+  cat("*CULTIVARS\n", file = name_exp)
+  cat("@C CR INGENO CNAME\n", file = name_exp)
+  for (i in 1:nrow(information)) {
+    cat(paste(sprintf("%2d",as.integer(information$C[i]))," ",sprintf("%2s", information$CR[i]),
+              " ", sprintf("%6s",information$INGENO[i])," ",sprintf("%-12s",information$CNAME[i]),
+              "\n", sep = ""), file = name_exp)
+  }
+  cat("\n", file = name_exp)
+  
+}
 
+
+# write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
+# close(proof)

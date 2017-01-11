@@ -24,7 +24,7 @@ proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8")
 
 write_details(proof, make_details())
 write_treatments(proof, make_treatments(IC, MI, MF, MH))
-
+write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
 
 
 
