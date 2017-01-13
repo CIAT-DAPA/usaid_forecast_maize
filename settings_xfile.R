@@ -149,12 +149,68 @@ make_IC <- function(ICBL, SH20, SNH4, SNO3){
 # make_IC(ICBL, SH20, SNH4, SNO3)
 
 
+# Parameters
+
+# FDATE = c(21, 21, 35, 35, 58)  ## Dias de la aplicacion +
+# FMCD = c('FE006', 'FE016', 'FE005', 'FE016', 'FE005') ## Investigar acerca de este parametro
+# FACD = 'AP002' ## Investigar acerca de este parametro
+# FDEP = 4       ## Profundidad de la aplicacion del nitrogeno
+# FAMN = c(33.3, 0, 63.9, 0, 63.9)
+# FAMP = c(29.1, 0, 0, 0, 0) ## Investigar mas acerca de este parametro
+# FAMK = c(0, 36, 0, 39.2, 0)
+# FAMC = 0
+# FAMO = 0
+# FOCD = 0
+# FERNAME = -99
+# FERTI = 'D' ## D = dias despues de la siembra
+
+
+# make all parameters in a object list for R
+
+# input_fertilizer <- list()
+# input_fertilizer$FDATE = c(21, 21, 35, 35, 58)  ## Dias de la aplicacion +
+# input_fertilizer$FMCD = c('FE006', 'FE016', 'FE005', 'FE016', 'FE005') ## Investigar acerca de este parametro
+# input_fertilizer$FACD = 'AP002' ## Investigar acerca de este parametro
+# input_fertilizer$FDEP = 4       ## Profundidad de la aplicacion del nitrogeno
+# input_fertilizer$FAMN = c(33.3, 0, 63.9, 0, 63.9)
+# input_fertilizer$FAMP = c(29.1, 0, 0, 0, 0) ## Investigar mas acerca de este parametro
+# input_fertilizer$FAMK = c(0, 36, 0, 39.2, 0)
+# input_fertilizer$FAMC = 0
+# input_fertilizer$FAMO = 0
+# input_fertilizer$FOCD = 0
+# input_fertilizer$FERNAME = -99
+# input_fertilizer$FERTI = 'D' ## D = dias despues de la siembra, es necesario actualizar con las otras opciones que tiene este parametro
 
 
 
+make_MF <- function(input_fertilizer){
+  
+  FDATE <- input_fertilizer$FDATE 
+  FMCD <- input_fertilizer$FMCD
+  FACD <- input_fertilizer$FACD
+  FDEP <- input_fertilizer$FDEP 
+  FAMN <- input_fertilizer$FAMN 
+  FAMP <- input_fertilizer$FAMP 
+  FAMK <- input_fertilizer$FAMK 
+  FAMC <- input_fertilizer$FAMC 
+  FAMO <- input_fertilizer$FAMO
+  FOCD <- input_fertilizer$FOCD
+  FERNAME <- input_fertilizer$FERNAME
+  FERTI <- input_fertilizer$FERTI
+  
+  fertilizer <- data.frame(F = 1, FDATE, FMCD, FACD, FDEP, FAMN, FAMP, FAMK,
+                                   FAMC, FAMO, FOCD, FERNAME)
+  
+  return(fertilizer)
+  
+}
+
+
+# make_MF(input_fertilizer)
 
 
 
+# Planting details
 
 
 
