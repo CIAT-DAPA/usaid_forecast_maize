@@ -31,6 +31,19 @@ SNH4 <- c(4.2, 4.4, 4.5)    # estas variables se pueden investigar cuales utiliz
 SNO3 <- c(11.9, 12.4, 7.6)  # estas variables se pueden investigar cuales utilizar cuando no se tiene condiciones iniciales
 ICDAT <- -99 #  for now
 
+input_fertilizer <- list()
+input_fertilizer$FDATE = c(21, 21, 35, 35, 58)  ## Dias de la aplicacion +
+input_fertilizer$FMCD = c('FE006', 'FE016', 'FE005', 'FE016', 'FE005') ## Investigar acerca de este parametro
+input_fertilizer$FACD = 'AP002' ## Investigar acerca de este parametro
+input_fertilizer$FDEP = 4       ## Profundidad de la aplicacion del nitrogeno
+input_fertilizer$FAMN = c(33.3, 0, 63.9, 0, 63.9)
+input_fertilizer$FAMP = c(29.1, 0, 0, 0, 0) ## Investigar mas acerca de este parametro
+input_fertilizer$FAMK = c(0, 36, 0, 39.2, 0)
+input_fertilizer$FAMC = 0
+input_fertilizer$FAMO = 0
+input_fertilizer$FOCD = 0
+input_fertilizer$FERNAME = -99
+input_fertilizer$FERTI = 'D' ## D = dias despues de la siembra, es necesario actualizar con las otras opciones que tiene este parametro
 
 
 ## Conexion to write experimental file, maybe is better to write a function to write all parameters
@@ -42,6 +55,7 @@ write_treatments(proof, make_treatments(IC, MI, MF, MH))
 write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
 write_fields(proof, make_fields(WSTA, ID_SOIL))
 write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3))
+write_MF(proof, make_MF(input_fertilizer))
 
 
 ##  add fucntion to close write

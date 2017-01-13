@@ -184,3 +184,25 @@ write_IC <- function(name_exp, information){
 }
 
 # write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3))
+
+
+
+write_MF <- function(name_exp, information){
+  
+  cat("*FERTILIZERS (INORGANIC)\n", file = name_exp)
+  cat("@F FDATE  FMCD  FACD  FDEP  FAMN  FAMP  FAMK  FAMC  FAMO  FOCD FERNAME                       \n", file = name_exp)
+  
+  for(i in 1:dim(information)[1]){
+    
+    cat(paste(sprintf("%2d %5i %5s %5i %5i %5.2f %5.2f %5.2f %5i %5i %5i %5-i", 1, information$FDATE[i], information$FMCD[i],
+                      information$FACD[i], information$FDEP[i], information$FAMN[i], information$FAMP[i], 
+                      information$FAMK[i], information$FAMC[i], information$FAMO[i], 
+                      information$FOCD[i], information$FERNAME[i]), '\n'), file = name_exp)
+    
+  }
+  
+  
+}
+
+
+# write_MF(proof, make_MF(input_fertilizer))
