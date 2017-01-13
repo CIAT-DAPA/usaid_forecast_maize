@@ -11,10 +11,25 @@ overwrite <- F
 details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B'
 people <- "Leonardo Ordoñez and Jeison Mesa"
 
-IC <- 1
-MI <- 0
-MF <- 1
-MH <- 0
+IC <- 1  # Inital conditions
+MI <- 0  # input if you are going to use a irrigation, 1 = TRUE, 0 = FALSe 
+MF <- 1 # Fertilization field, 1 = TRUE, 0 = FALSE
+MH <- 0 # its necessary to include harvest date
+
+
+CR <- 'MZ'    # Crop Code, you need to search this parameter for de manual DSSAT (its different by crop)
+INGENO <- 'CI0027' # Cultivar indentifier, this is the code for cultivar to run depend of crop
+CNAME <- 'PIO 30F35HRB_'  # Whatever code to identify the cultivar ran, maybe no too long string
+
+WSTA <- 'CCBR1502' # Weather Station Code, its the same code to using in WTH file
+ID_SOIL <- 'CCBuga0001' # Id soil to using in the SOIL.SOl
+
+
+ICBL <- c(25, 45, 95)
+SH20 <- -99
+SNH4 <- c(4.2, 4.4, 4.5)    # estas variables se pueden investigar cuales utilizar cuando no se tiene condiciones iniciales
+SNO3 <- c(11.9, 12.4, 7.6)  # estas variables se pueden investigar cuales utilizar cuando no se tiene condiciones iniciales
+ICDAT <- -99 #  for now
 
 
 
@@ -25,7 +40,8 @@ proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8")
 write_details(proof, make_details())
 write_treatments(proof, make_treatments(IC, MI, MF, MH))
 write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
-
+write_fields(proof, make_fields(WSTA, ID_SOIL))
+write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3))
 
 
 ##  add fucntion to close write
