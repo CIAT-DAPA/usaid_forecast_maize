@@ -296,6 +296,27 @@ make_sControls <- function(input_sControls){
 
 # make_sControls(input_sControls)
 
+# if is necessary to specify sowing dates 
+# PFRST <- -99
+# PLAST <- -99
+# system <- 'irrigation'  ## Solo se habilita con IC = 1 (irrigation es como condiciones inicial del suelo menos drasticas)
+
+
+make_Amgmt <- function(PFRST, PLAST){
+  # PSTMX PSTMN
+  auto_mgmt <- data.frame(N = 1, PLANTING = 'PL', PFRST, PLAST, PH2OL = 50, PH2OU = 100,
+                                  PH2OD = 30, PSTMX = 40, PSTMN = 10, IRRIGATION = "IR", IMDEP =30, ITHRL = 50, 
+                                  ITHRU =100, IROFF = "GS000", IMETH = "IR001", IRAMT = 10, IREFF = 1,
+                                  NITROGEN = "NI", NMDEP = 30, NMTHR = 50, NAMNT = 25, NCODE = "FE001",
+                                  NAOFF = "GS000", RESIDUES = "RE", RIPCN = 100, RTIME = 1, RIDEP = 20, 
+                                  HARVEST = "HA", HFRST = 0, HLAST = 00001, HPCNP = 100, HPCNR = 0)
+ 
+  return(auto_mgmt) 
+}
+
+
+# make_Amgmt(PFRST, PLAST)
+
 
 
 

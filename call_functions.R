@@ -74,6 +74,11 @@ IRRIG <- 'N'  ##  on reporting date, A automatically irragated, N Nothing, add t
 FERTI = 'N' ## add more options
 SDATE <- pmax(input_pDetails$PDATE - 20, 0)
 
+
+
+PFRST <- -99
+PLAST <- -99
+
 ## Conexion to write experimental file, maybe is better to write a function to write all parameters
 
 proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
@@ -86,9 +91,10 @@ write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3))
 write_MF(proof, make_MF(input_fertilizer))
 write_pDetails(proof, make_pDetails(input_pDetails))
 write__sControls(proof, make_sControls(input_sControls))
+write_Amgmt(proof, make_Amgmt(PFRST, PLAST))
+
 
 ##  add function to close write
-
 
 
 close(proof)
