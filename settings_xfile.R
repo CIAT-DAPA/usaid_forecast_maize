@@ -259,8 +259,42 @@ make_pDetails <- function(input_pDetails){
 
 # make_pDetails(input_pDetails)
 
+# Simulation Controls
+
+# input_sControls <- list()
+# NYERS <- 20 ## Years for simulation
+# SMODEL <- 'MZCER045' # model to use
+# WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico 
+# NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
+# PLANT <- 'R'  # R = planting on reporting date ## Add the other options
+# IRRIG <- 'R'  ##  on reporting date, A automatically irragated, N Nothing, add the other options
+# FERTI = 'N' ## add more options
+# SDATE <- pmax(input_pDetails$PDATE - 20, 0) 
 
 
+make_sControls <- function(input_sControls){
+  
+
+  sim_ctrl <- data.frame(N = 1, GENERAL = "GE", NYERS, NREPS = 1, START = "S", SDATE,
+                                 RSEED = 2150, SNAME = "simctr1", SMODEL,
+                                 OPTIONS = "OP", WATER, NITRO, SYMBI = "N",
+                                 PHOSP = "N", POTAS = "N", DISES = "N", CHEM = "N", TILL = "N",
+                                 CO2 = "M", METHODS = "ME", WTHER = "M", INCON = "M", LIGHT = "E",
+                                 EVAPO = "R", INFIL = "S", PHOTO = "C", HYDRO = "R",
+                                 NSWIT = 1, MESOM = "G", MESEV = "S", MESOL =2, MANAGEMENT = "MA",
+                                 PLANT, IRRIG,
+                                 FERTI, RESID = "R", HARVS = "M", OUTPUTS = "OU", FNAME = "N",
+                                 OVVEW = "Y", SUMRY = "Y", FROPT = 1, GROUT = "Y", CAOUT = "Y",
+                                 WAOUT = "Y", NIOUT = "Y", MIOUT = "Y",
+                                 DIOUT = "Y", VBOSE = "Y", CHOUT = "Y", OPOUT = "Y")
+
+ 
+  return(sim_ctrl)
+   
+}
+
+
+# make_sControls(input_sControls)
 
 
 
