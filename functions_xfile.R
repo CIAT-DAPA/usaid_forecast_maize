@@ -276,3 +276,45 @@ write__sControls <- function(name_exp, information){
 }
 
 # write__sControls(proof, make_sControls(input_sControls))
+
+
+write_Amgmt <- function(name_exp, information){
+  
+  
+  cat("@  AUTOMATIC MANAGEMENT\n", file = name_exp)
+  cat("@N PLANTING    PFRST PLAST PH2OL PH2OU PH2OD PSTMX PSTMN\n", file = name_exp)
+  
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$PLANTING),
+            " ",sprintf("%5s",information$PFRST)," ",sprintf("%5s",information$PLAST),
+            " ",sprintf("%5d",as.integer(information$PH2OL))," ",sprintf("%5d",as.integer(information$PH2OU)),
+            " ",sprintf("%5d",as.integer(information$PH2OD))," ",sprintf("%5d",as.integer(information$PSTMX)),
+            " ",sprintf("%5d",as.integer(information$PSTMN)),"\n",sep=""),file=name_exp)
+  
+  cat("@N IRRIGATION  IMDEP ITHRL ITHRU IROFF IMETH IRAMT IREFF\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$IRRIGATION),
+            " ",sprintf("%5d",as.integer(information$IMDEP))," ",sprintf("%5d",as.integer(information$ITHRL)),
+            " ",sprintf("%5d",as.integer(information$ITHRU))," ",sprintf("%5s",information$IROFF),
+            " ",sprintf("%5s",information$IMETH)," ",sprintf("%5d",as.integer(information$IRAMT)),
+            " ",sprintf("%5d",as.integer(information$IREFF)),"\n",sep=""),file=name_exp)
+  
+  cat("@N NITROGEN    NMDEP NMTHR NAMNT NCODE NAOFF\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$NITROGEN),
+            " ",sprintf("%5d",as.integer(information$NMDEP))," ",sprintf("%5d",as.integer(information$NMTHR)),
+            " ",sprintf("%5d",as.integer(information$NAMNT))," ",sprintf("%5s",information$NCODE),
+            " ",sprintf("%5s",information$NAOFF),"\n",sep=""),file=name_exp)
+  cat("@N RESIDUES    RIPCN RTIME RIDEP\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$RESIDUES),
+            " ",sprintf("%5d",as.integer(information$RIPCN))," ",sprintf("%5d",as.integer(information$RTIME)),
+            " ",sprintf("%5d",as.integer(information$RIDEP)),"\n",sep=""),file=name_exp)
+  cat("@N HARVEST     HFRST HLAST HPCNP HPCNR\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$HARVEST),
+            " ",sprintf("%5d",as.integer(information$HFRST))," ",sprintf("%5d",as.integer(information$HLAST)),
+            " ",sprintf("%5d",as.integer(information$HPCNP))," ",sprintf("%5d",as.integer(information$HPCNR)),
+            "\n",sep=""),file=name_exp)
+  
+  cat("\n", file = name_exp)
+  
+}
+
+
+# write_Amgmt(proof, make_Amgmt(PFRST, PLAST))
