@@ -230,3 +230,49 @@ write_pDetails <- function(name_exp, information){
 
 
 # write_pDetails(name_exp, make_pDetails(input_pDetails))
+
+write__sControls <- function(name_exp, information){
+  
+  #simulation controls
+  cat("*SIMULATION CONTROLS\n", file = name_exp)
+  cat("@N GENERAL     NYERS NREPS START SDATE RSEED SNAME.................... SMODEL\n", file = name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$GENERAL),
+            " ",sprintf("%5d",as.integer(information$NYERS))," ",sprintf("%5d",as.integer(information$NREPS)),
+            " ",sprintf("%5s",information$START)," ",sprintf("%5s",information$SDATE),
+            " ",sprintf("%5d",as.integer(information$RSEED))," ",sprintf("%-25s",information$SNAME),
+            " ",sprintf("%-6s",information$SMODEL),"\n",sep=""),file=name_exp)
+  cat("@N OPTIONS     WATER NITRO SYMBI PHOSP POTAS DISES  CHEM  TILL   CO2\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$OPTIONS),
+            " ",sprintf("%5s",information$WATER)," ",sprintf("%5s",information$NITRO),
+            " ",sprintf("%5s",information$SYMBI)," ",sprintf("%5s",information$PHOSP),
+            " ",sprintf("%5s",information$POTAS)," ",sprintf("%5s",information$DISES),
+            " ",sprintf("%5s",information$CHEM)," ",sprintf("%5s",information$TILL),
+            " ",sprintf("%5s",information$CO2),"\n",sep=""),file=name_exp)
+  cat("@N METHODS     WTHER INCON LIGHT EVAPO INFIL PHOTO HYDRO NSWIT MESOM MESEV MESOL\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$METHODS),
+            " ",sprintf("%5s",information$WTHER)," ",sprintf("%5s",information$INCON),
+            " ",sprintf("%5s",information$LIGHT)," ",sprintf("%5s",information$EVAPO),
+            " ",sprintf("%5s",information$INFIL)," ",sprintf("%5s",information$PHOTO),
+            " ",sprintf("%5s",information$HYDRO)," ",sprintf("%5d",as.integer(information$NSWIT)),
+            " ",sprintf("%5s",information$MESOM)," ",sprintf("%5s",information$MESEV),
+            " ",sprintf("%5d",as.integer(information$MESOL)),"\n",sep=""),file=name_exp)
+  cat("@N MANAGEMENT  PLANT IRRIG FERTI RESID HARVS\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$MANAGEMENT),
+            " ",sprintf("%5s",information$PLANT)," ",sprintf("%5s",information$IRRIG),
+            " ",sprintf("%5s",information$FERTI)," ",sprintf("%5s",information$RESID),
+            " ",sprintf("%5s",information$HARVS),"\n",sep=""),file=name_exp)
+  cat("@N OUTPUTS     FNAME OVVEW SUMRY FROPT GROUT CAOUT WAOUT NIOUT MIOUT DIOUT VBOSE CHOUT OPOUT\n",file=name_exp)
+  cat(paste(sprintf("%2d",as.integer(information$N))," ",sprintf("%-11s",information$OUTPUTS),
+            " ",sprintf("%5s",information$FNAME)," ",sprintf("%5s",information$OVVEW),
+            " ",sprintf("%5s",information$SUMRY)," ",sprintf("%5s",information$FROPT),
+            " ",sprintf("%5s",information$GROUT)," ",sprintf("%5s",information$CAOUT),
+            " ",sprintf("%5s",information$WAOUT)," ",sprintf("%5s",information$NIOUT),
+            " ",sprintf("%5s",information$MIOUT)," ",sprintf("%5s",information$DIOUT),
+            " ",sprintf("%5s",information$VBOSE)," ",sprintf("%5s",information$CHOUT),
+            " ",sprintf("%5s",information$OPOUT),"\n",sep=""),file=name_exp)
+  cat("\n", file = name_exp)
+  
+  
+}
+
+# write__sControls(proof, make_sControls(input_sControls))

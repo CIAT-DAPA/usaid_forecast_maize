@@ -63,6 +63,17 @@ input_pDetails$PLRD <- 90
 input_pDetails$PLDP <- 4
 ## Variables como PLWT, PAGE, PENV, PLPH, SPRL con -99
 
+
+input_sControls <- list()
+NYERS <- 20 ## Years for simulation
+SMODEL <- 'MZCER045' # model to use
+WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
+NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
+PLANT <- 'R'  # R = planting on reporting date ## Add the other options
+IRRIG <- 'N'  ##  on reporting date, A automatically irragated, N Nothing, add the other options
+FERTI = 'N' ## add more options
+SDATE <- pmax(input_pDetails$PDATE - 20, 0)
+
 ## Conexion to write experimental file, maybe is better to write a function to write all parameters
 
 proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
@@ -74,6 +85,7 @@ write_fields(proof, make_fields(WSTA, ID_SOIL))
 write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3))
 write_MF(proof, make_MF(input_fertilizer))
 write_pDetails(proof, make_pDetails(input_pDetails))
+write__sControls(proof, make_sControls(input_sControls))
 
 ##  add function to close write
 
