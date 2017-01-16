@@ -46,6 +46,23 @@ input_fertilizer$FERNAME = -99
 input_fertilizer$FERTI = 'D' ## D = dias despues de la siembra, es necesario actualizar con las otras opciones que tiene este parametro
 
 
+
+## doing a comment that explain all parameters
+input_pDetails <- list()
+input_pDetails$PDATE <- 80092 # Planting date
+input_pDetails$SDATE <- pmax(PDATE - 20, 0)   ## Starting simulation. 20 before planting date
+input_pDetails$plant <- 'R'  # R = planting on reporting date
+## Remember Simulation date starts 20 days before planting date
+input_pDetails$EDATE <- -99
+input_pDetails$PPOP <- 6.25
+input_pDetails$PPOE <- 6.25
+input_pDetails$PLME <- 'S'
+input_pDetails$PLDS <- 'R'
+input_pDetails$PLRS <- 80
+input_pDetails$PLRD <- 90
+input_pDetails$PLDP <- 4
+## Variables como PLWT, PAGE, PENV, PLPH, SPRL con -99
+
 ## Conexion to write experimental file, maybe is better to write a function to write all parameters
 
 proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
@@ -56,9 +73,11 @@ write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
 write_fields(proof, make_fields(WSTA, ID_SOIL))
 write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3))
 write_MF(proof, make_MF(input_fertilizer))
+write_pDetails(proof, make_pDetails(input_pDetails))
+
+##  add function to close write
 
 
-##  add fucntion to close write
 
 close(proof)
 

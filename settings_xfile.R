@@ -11,9 +11,11 @@
 # Proof make_details
 
 # Parameters
-# details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B'
-# people <- "Leonardo Ordoñez and Jeison Mesa"
+# details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B' # recordar cambiar este campo solo para el proyecto de USAID
+# details <- '*EXP.DETAILS: USAID-CIAT project Agroclimatic forecasts' 
+# people <- "CIAT"
 # The others parameters its not necessary to have outside the function
+
 
 make_details <- function(DETAILS, PEOPLE){
   
@@ -210,8 +212,52 @@ make_MF <- function(input_fertilizer){
 
 
 
-# Planting details
+# Planting Details
 
+
+## doing a comment that explain all parameters
+# input_pDetails <- list()
+# input_pDetails$PDATE <- 80092 # Planting date
+# input_pDetails$SDATE <- pmax(PDATE - 20, 0)   ## Starting simulation. 20 before planting date
+# input_pDetails$plant <- 'R'  # R = planting on reporting date
+## Remember Simulation date starts 20 days before planting date
+# input_pDetails$EDATE <- -99
+# input_pDetails$PPOP <- 6.25
+# input_pDetails$PPOE <- 6.25
+# input_pDetails$PLME <- 'S'
+# input_pDetails$PLDS <- 'R'
+# input_pDetails$PLRS <- 80
+# input_pDetails$PLRD <- 90
+# input_pDetails$PLDP <- 4
+## Variables como PLWT, PAGE, PENV, PLPH, SPRL con -99
+
+make_pDetails <- function(input_pDetails){
+  
+
+  PDATE <- input_pDetails$PDATE 
+  SDATE <- input_pDetails$SDATE    
+  plant <- input_pDetails$plant   
+  EDate <- input_pDetails$EDATE  
+  PPOP <- input_pDetails$PPOP  
+  PPOE <- input_pDetails$PPOE 
+  PLME <- input_pDetails$PLME  
+  PLDS <- input_pDetails$PLDS  
+  PLRS <- input_pDetails$PLRS  
+  PLRD <- input_pDetails$PLRD  
+  PLDP <- input_pDetails$PLDP  
+  
+  
+  planting <- data.frame( P = 1, PDATE, EDATE = -99, PPOP, PPOE, PLME, 
+                                  PLDS, PLRS = 80, PLRD, PLDP,
+                                  PLWT = -99, PAGE = -99, PENV = -99, PLPH = -99, SPRL = -99)
+  
+  
+  return(planting)
+
+  
+}
+
+# make_pDetails(input_pDetails)
 
 
 
