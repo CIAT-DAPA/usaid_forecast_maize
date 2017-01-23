@@ -12,7 +12,7 @@
 
 # Parameters
 # details <- '*EXP.DETAILS: CALB1501MZ Calibracion Buga Valle 2015B' # recordar cambiar este campo solo para el proyecto de USAID
-# details <- '*EXP.DETAILS: USAID-CIAT project Agroclimatic forecasts' 
+# details <- '*EXP.DETAILS: USAID-CIAT project Agroclimatic forecasts'
 # people <- "CIAT"
 # The others parameters its not necessary to have outside the function
 
@@ -37,11 +37,11 @@ make_details <- function(DETAILS, PEOPLE){
 # Parameters
 # For now make_treatments make a configuration for one combination to run into the experimental
 
-# IC <- 1         # 1 if its necesarry run the experimental with initial conditions, 0 if its not necessary to run
+# IC <- 0         # 1 if its necesarry run the experimental with initial conditions, 0 if its not necessary to run
 #                   the experimental with initial conditions
 
 # MI <- 0         # 1 turn on field for irrigation level, 0 turn off field for irrigation level
-# MF <- 1         # 1 turn on field for fertilizier level, 0 turn off field for fertilizier level
+# MF <- 0         # 1 turn on field for fertilizier level, 0 turn off field for fertilizier level
 # MH <- 0         # 1 turn on field for harvest level, 0 turn off field for harvest level
 
 
@@ -82,7 +82,7 @@ make_cultivars <- function(CR, INGENO, CNAME){
 
 
 # Parameters
-# WSTA <- 'CCBR1502' # Weather Station Code, its the same code to using in WTH file
+# WSTA <- 'CCCR8000' # Weather Station Code, its the same code to using in WTH file
 # ID_SOIL <- 'CCBuga0001' # Id soil to using in the SOIL.SOl
 
 
@@ -218,7 +218,7 @@ make_MF <- function(input_fertilizer){
 ## doing a comment that explain all parameters
 # input_pDetails <- list()
 # input_pDetails$PDATE <- 80092 # Planting date
-# input_pDetails$SDATE <- pmax(PDATE - 20, 0)   ## Starting simulation. 20 before planting date
+# input_pDetails$SDATE <- pmax(input_pDetails$PDATE - 20, 0)   ## Starting simulation. 20 before planting date
 # input_pDetails$plant <- 'R'  # R = planting on reporting date
 ## Remember Simulation date starts 20 days before planting date
 # input_pDetails$EDATE <- -99
@@ -263,18 +263,17 @@ make_pDetails <- function(input_pDetails){
 
 # input_sControls <- list()
 # NYERS <- 20 ## Years for simulation
-# SMODEL <- 'MZCER045' # model to use
-# WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico 
+# SMODEL <- 'MZCER046' # model to use
+# WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
 # NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
 # PLANT <- 'R'  # R = planting on reporting date ## Add the other options
 # IRRIG <- 'R'  ##  on reporting date, A automatically irragated, N Nothing, add the other options
 # FERTI = 'N' ## add more options
-# SDATE <- pmax(input_pDetails$PDATE - 20, 0) 
+# SDATE <- pmax(input_pDetails$PDATE - 20, 0)
 
 
 make_sControls <- function(input_sControls){
   
-
   sim_ctrl <- data.frame(N = 1, GENERAL = "GE", NYERS, NREPS = 1, START = "S", SDATE,
                                  RSEED = 2150, SNAME = "simctr1", SMODEL,
                                  OPTIONS = "OP", WATER, NITRO, SYMBI = "N",
