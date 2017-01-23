@@ -43,6 +43,10 @@ library(lubridate)
 
 path <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/'
 station <- 'LaUnion'
+
+
+
+
 name_xfile_climate <- 'CCCR8000'  ## se debe indicar tal cual como en el WSTA dentro del archivo x-file
 
 ## Luego preguntar cuales son las benditas coordenadas
@@ -107,14 +111,59 @@ make_wth <- function(data, out_dir, lat, long){
   
   ##cat(paste("*WEATHER DATA :"),paste(coordenadas[1,1]),paste(coordenadas[1,2]))
   cat(paste("*WEATHER DATA :"), paste("USAID"))
-  cat("\n")
-  cat("\n")
+  cat("/n")
+  cat("/n")
   cat(c("@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT"))
-  cat("\n")
+  cat("/n")
   cat(sprintf("%6s %8.3f %8.3f %5.0f %5.1f %5.1f %5.2f %5.2f", "CCCR", lat, long, -99,-99, -99.0, 0, 0))
-  cat("\n")
+  cat("/n")
   cat(c('@DATE  SRAD  TMAX  TMIN  RAIN'))
-  cat("\n")
-  cat(cbind(sprintf("%5s %5.1f %5.1f %5.1f %5.1f", date, Srad, Tmax, Tmin, Prec)), sep = "\n")
+  cat("/n")
+  cat(cbind(sprintf("%5s %5.1f %5.1f %5.1f %5.1f", date, Srad, Tmax, Tmin, Prec)), sep = "/n")
   sink()
 }
+
+
+
+### Funcion para generar tantos .WTH como escenarios climaticos de pronosticos
+### Generar esta funcion a modo que el nombre del .WTH sea facil de cambiar
+
+
+library(tidyverse)
+library(lubridate)
+
+path <- '//dapadfs/Workspace_cluster_9/USAID_Project/Product_3_agro-climatic_forecast/climate/data_forecast/output_resampling/Pronosticos_LaUnion/Escenarios/'
+
+climate_list <- list.files(path, pattern = 'esc', full.names = T)
+
+## function to extract some files you need
+
+# "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
+
+filter_text <- function(data, matches){
+  
+  return(data[-grep(matches, data)])
+}
+
+
+# filter_text(climate_list, "escenario_max.csv|escenario_min.csv|escenario_prom.csv")
+
+# 
+omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
+
+
+## pattern escenario es para filtrar siempre solo los escenarios
+
+climate_list <- list.files(path, pattern = 'escenario', full.names = T) %>%
+                  filter_text(omit_files)
+
+# solucionar year hacer consulta al servidor del año actual
+# you need to have always the column called year because this is the var to change to actual date date
+# date is get to ask server for the local date, remeber this depend of the forecasts year to simulate
+
+make_date <- function(data){
+  
+  
+}
+lapply(climate_list, read_csv)
+
