@@ -163,7 +163,21 @@ climate_list <- list.files(path, pattern = 'escenario', full.names = T) %>%
 
 make_date <- function(data){
   
+  # data <- climate_list[1]
+  current_year <- Sys.Date() %>%
+                    year()
   
+  init_frcast <- ydm(paste(current_year, data$day[1], data$month[1], sep = "-"))
+  end_frcast <- ydm(init_forecasting) + ddays(dim(data)[1] - 1)
+  
+  
+  frcast_date <- seq(init_frcast,
+                  end_frcast, by = '1 day')
+  
+  
+  data <-  tbl_df(data.frame(data, frcast_date))
+  
+  return(data)
 }
-lapply(climate_list, read_csv)
-
+z <- lapply(climate_list, read_csv)
+lapply(z, make_date)
