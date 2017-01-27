@@ -99,6 +99,8 @@ date_for_dssat <- function(year, day_year) {
 
 make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   
+  
+  ## data <- z[[1]]
   Srad <- data$srad
   Tmax <- data$tmax
   Tmin <- data$tmin
@@ -110,15 +112,15 @@ make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   
   ##cat(paste("*WEATHER DATA :"),paste(coordenadas[1,1]),paste(coordenadas[1,2]))
   cat(paste("*WEATHER DATA :"), paste("USAID"))
-  cat("/n")
-  cat("/n")
+  cat("\n")
+  cat("\n")
   cat(c("@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT"))
-  cat("/n")
+  cat("\n")
   cat(sprintf("%6s %8.3f %8.3f %5.0f %5.1f %5.1f %5.2f %5.2f", "CCCR", lat, long, -99,-99, -99.0, 0, 0))
-  cat("/n")
+  cat("\n")
   cat(c('@DATE  SRAD  TMAX  TMIN  RAIN'))
-  cat("/n")
-  cat(cbind(sprintf("%5s %5.1f %5.1f %5.1f %5.1f", date, Srad, Tmax, Tmin, Prec)), sep = "/n")
+  cat("\n")
+  cat(cbind(sprintf("%5s %5.1f %5.1f %5.1f %5.1f", date, Srad, Tmax, Tmin, Prec)), sep = "\n")
   sink()
 }
 
@@ -219,7 +221,21 @@ out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/'
 z[[1]] %>%
   mutate(day_dssat = frcast_date)
 
-z <- lapply(z, mutate, day_dssat = frcast_date)
+z <- lapply(z, mutate, date_dssat = frcast_date)
 
-make_wth(z[[1]], out_dir, lat, long, name_xfile_climate = )
+
+z[[1]] <- z[[1]]%>%
+  # mutate(date = dmy(paste(day, month, year, sep = '/'))) %>%
+  mutate(julian_day = yday(frcast_date), year_2 = substr(year(frcast_date), 3, 4))
+
+date_dssat <- 0
+for(i in 1:dim(z[[1]])[1]){
+
+  date_dssat[i] <- date_for_dssat(z[[1]]$year_2[i], z[[1]]$julian_day[i])
+
+}
+
+z[[1]]$date_dssat <- date_dssat
+
+make_wth(z[[1]], out_dir, -99, -99, name_xfile_climate = 'proof.WTH')
 
