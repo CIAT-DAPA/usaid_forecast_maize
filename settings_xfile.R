@@ -271,7 +271,6 @@ make_pDetails <- function(input_pDetails){
 # input_sControls$FERTI = 'N' ## add more options
 # input_sControls$SDATE <- pmax(input_pDetails$PDATE - 20, 0)
 
-
 make_sControls <- function(input_sControls, PDATE){
   
   ## 
