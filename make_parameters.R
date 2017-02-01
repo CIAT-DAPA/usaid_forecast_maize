@@ -1,396 +1,272 @@
+## es necesario que esta funcion escriba los parametros dado la localidad a generar el pronostico agroclimatico
+# funcion que va generar los parametros por region 
 
-make_parameters <- function(){
+# El parametro region genera la informacion necesaria para ajustar los parametros de entrada para DSSAT v 4.6 necesarios a correr por
+# las regiones del proyecto con USAID
+
+make_xfile_region("LaUnion")
+
+make_xfile_region <- function(region){
   
+  
+  if(region == "LaUnion"){
+    
+    
+    ## Parameters necessary to write experimental file
+    
+    # out_file <- "./JBID.MZX"
+    
+    out_file <- "./proof.MZX"
+    overwrite <- F
+    details <- '*USAID-CIAT project Agroclimatic forecasts'
+    people <- "Leonardo Ordoñez and Jeison Mesa"
+    
+    IC <- 0  # Inital conditions
+    MI <- 0  # input if you are going to use a irrigation, 1 = TRUE, 0 = FALSe 
+    MF <- 0 # Fertilization field, 1 = TRUE, 0 = FALSE
+    MH <- 0 # its necessary to include harvest date when you turn on this parameter
+    
+    
+    CR <- 'MZ'    # Crop Code, you need to search this parameter for de manual DSSAT (its different by crop)
+    INGENO <- 'CI0027' # Cultivar indentifier, this is the code for cultivar to run depend of crop
+    CNAME <- 'PIO 30F35HRB_'  # Whatever code to identify the cultivar ran, maybe no too long string
+    
+    WSTA <- 'CCCR8000' # Weather Station Code, its the same code to using in WTH file
+    ID_SOIL <- 'CCBuga0001' # Id soil to using in the SOIL.SOl
+    
+    
+    ICBL <- c(25, 45, 95)
+    SH20 <- -99
+    SNH4 <- c(4.2, 4.4, 4.5)    # estas variables se pueden investigar cuales utilizar cuando no se tiene condiciones iniciales
+    SNO3 <- c(11.9, 12.4, 7.6)  # estas variables se pueden investigar cuales utilizar cuando no se tiene condiciones iniciales
+    ICDAT <- -99 #  for now
+    
+    input_fertilizer <- list()
+    input_fertilizer$FDATE = c(21, 21, 35, 35, 58)  ## Dias de la aplicacion +
+    input_fertilizer$FMCD = c('FE006', 'FE016', 'FE005', 'FE016', 'FE005') ## Investigar acerca de este parametro
+    input_fertilizer$FACD = 'AP002' ## Investigar acerca de este parametro
+    input_fertilizer$FDEP = 4       ## Profundidad de la aplicacion del nitrogeno
+    input_fertilizer$FAMN = c(33.3, 0, 63.9, 0, 63.9)
+    input_fertilizer$FAMP = c(29.1, 0, 0, 0, 0) ## Investigar mas acerca de este parametro
+    input_fertilizer$FAMK = c(0, 36, 0, 39.2, 0)
+    input_fertilizer$FAMC = 0
+    input_fertilizer$FAMO = 0
+    input_fertilizer$FOCD = 0
+    input_fertilizer$FERNAME = -99
+    input_fertilizer$FERTI = 'D' ## D = dias despues de la siembra, es necesario actualizar con las otras opciones que tiene este parametro
+    
+    
+    
+    ## doing a comment that explain all parameters
+    input_pDetails <- list()
+    input_pDetails$PDATE <- 80092 # Planting date
+    input_pDetails$SDATE <- pmax(input_pDetails$PDATE  - 20, 0)   ## Starting simulation. 20 days before planting date
+    input_pDetails$plant <- 'R'  # R = planting on reporting date
+    ## Remember Simulation date starts 20 days before planting date
+    input_pDetails$EDATE <- -99
+    input_pDetails$PPOP <- 6.25
+    input_pDetails$PPOE <- 6.25
+    input_pDetails$PLME <- 'S'
+    input_pDetails$PLDS <- 'R'
+    input_pDetails$PLRS <- 80
+    input_pDetails$PLRD <- 90
+    input_pDetails$PLDP <- 4
+    ## Variables como PLWT, PAGE, PENV, PLPH, SPRL con -99
+    
+    input_sControls <- list()
+    input_sControls$NYERS <- 1 ## Years for simulation
+    input_sControls$SMODEL <- 'MZCER046' # model to use
+    input_sControls$WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
+    input_sControls$NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
+    input_sControls$PLANT <- 'R'  # R = planting on reporting date ## Add the other options
+    input_sControls$IRRIG <- 'N'  ##  R =  on reporting date, A automatically irragated, N Nothing, add the other options
+    input_sControls$FERTI = 'N' ## add more options
+    input_sControls$SDATE <- pmax(input_pDetails$PDATE - 20, 0)
+
+    
+    PFRST <- -99
+    PLAST <- -99
+    
+    proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
+    
+    write_details(proof, make_details(details, people))
+    write_treatments(proof, make_treatments(IC, MI, MF, MH))
+    write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
+    write_fields(proof, make_fields(WSTA, ID_SOIL))
+    # Las corridas serán entonces de acuerdo al potencial en rendimiento que puedan alcanzar las plantas
+    # write_IC(proof, make_IC(ICBL, SH20, SNH4, SNO3)) # posiblemente este campo no se necesite durante la corrida de los pronosticos
+    # write_MF(proof, make_MF(input_fertilizer))         # sin requerimientos por fertilizantes dejarlo con potencial
+    write_pDetails(proof, make_pDetails(input_pDetails))     
+    write__sControls(proof, make_sControls(input_sControls))
+    write_Amgmt(proof, make_Amgmt(PFRST, PLAST))
+    close(proof)
+    
+    
+  }
   
 }
 
 
 
-make_xfile <- function(in_data, out_file, overwrite = F) {
+
+
+
+
+
+
+
+
+
+
+
+args <- alist(a = 1, b = 2)
+body <- quote(a + b)
+
+make_function1 <- function(args, body, env = parent.frame()) {
+  args <- as.pairlist(args)
+  eval(call("function", args, body), env)
+}
+
+make_function2 <- function(args, body, env = parent.frame()) {
+  f <- function() {
+    
+    NYERS <- 20 ## Years for simulation
+    SMODEL <- 'MZCER045' # model to use
+    WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
+    NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
+    PLANT <- 'R'  # R = planting on reporting date ## Add the other options
+    IRRIG <- 'N'  ##  on reporting date, A automatically irragated, N Nothing, add the other options
+    FERTI = 'N' ## add more options
+    # SDATE <- pmax(input_pDetails$PDATE - 20, 0)
+  }
   
-  #open file in write mode
-  if (file.exists(out_file)) {
-    if (overwrite) {
-      pf <- file(out_file, open = "w")
+  formals(f) <- args
+  body(f) <- body
+  environment(f) <- env
+  return(f)
+
+  
+}
+
+
+
+make_function3 <- function(args, body, env = parent.frame()) {
+  as.function(c(args, body), env)
+  return()
+  
+}
+
+make_function2(args, body)
+function(a = 1, b = 2) a + b
+
+
+myf <- function(x) {
+  innerf <- function(x) assign("Global.res", x^2, envir = .GlobalEnv)
+  innerf(x+1)
+}
+
+myf(3)
+Global.res
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+get_test_var <- function(x){
+  return(x)
+}
+
+
+
+add_function_to_envir <- function(my_function_name, to_envir) {
+  
+  ##  my_function_name <- get_test_var 
+  #   to_envir <- environment()
+  script_text <- capture.output(eval(parse(text = my_function_name)))
+  script_text[1] <- paste0(my_function_name, " <- ", script_text[1])
+  eval(parse(text = script_text), envir = to_envir)
+}
+
+some_function3 <- function(){
+  test_var <- "col"
+  add_function_to_envir("get_test_var", environment()) 
+  
+  
+  return(get_test_var(test_var)) 
+}
+
+
+
+p <- some_function3() 
+
+
+f <- function(abc = 1, def = 2, ghi = 3) {
+  list(sys = sys.call(), match = match.call())
+}
+f(d = 2, 2)
+
+
+
+find_assign2 <- function(x) {
+  if (is.atomic(x) || is.name(x)) {
+    character()
+  } else if (is.call(x)) {
+    if (identical(x[[1]], quote(`<-`))) {
+      as.character(x[[2]])
     } else {
-      rnum <- round(runif(1, 10000, 20000), 0)
-      tmpvar <- unlist(strsplit(out_file, "/", fixed = T))
-      pth_ref <- paste(tmpvar[1:(length(tmpvar) - 1)], collapse = "/")
-      out_file <- paste(pth_ref, "/copy-", rnum, "_", tmpvar[length(tmpvar)], sep = "")
-      pf <- file(out_file, open = "w")
+      unlist(lapply(x, find_assign2))
     }
+  } else if (is.pairlist(x)) {
+    unlist(lapply(x, find_assign2))
   } else {
-    pf <- file(out_file,open="w")
+    stop("Don't know how to handle type ", typeof(x), 
+         call. = FALSE)
   }
-  
-  #write header and stuff
-  #pf <- file(out_file,open="w")
-  cat(paste0(information$exp_details, "\n"), file = pf)
-  cat("\n",file = pf)
-  
-  #general stuff
-  cat("*GENERAL\n@PEOPLE\n", file = pf)
-  cat(paste(sprintf("%-12s", as.character(in_data$general$PEOPLE)), "\n", sep = ""), file = pf)
-  cat("@ADDRESS\n", file = pf)
-  cat(paste(sprintf("%-12s", as.character(in_data$general$ADDRESS)), "\n", sep = ""), file = pf)
-  cat("@SITE\n", file = pf)
-  cat(paste(sprintf("%-12s", as.character(in_data$general$SITE)), "\n", sep = ""), file = pf)
-  
-  #treatments
-  cat("*TREATMENTS                        -------------FACTOR LEVELS------------\n", file = pf)
-  cat("@N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM\n", file = pf)
-  for (i in 1:nrow(in_data$treatments)) {
-    
-    cat(paste(sprintf("%1$2d%2$2d%3$2d%4$2d",as.integer(in_data$treatments$N[i]),as.integer(in_data$treatments$R[i]),
-                      as.integer(in_data$treatments$O[i]),as.integer(in_data$treatments$C[i])),
-              " ",sprintf("%1$-25s%2$3d%3$3d%4$3d%5$3d%6$3d%7$3d%8$3d%9$3d%10$3d%11$3d%12$3d%13$3d%14$3d",in_data$treatments$TNAME[i],
-                          as.integer(in_data$treatments$CU[i]),as.integer(in_data$treatments$FL[i]),as.integer(in_data$treatments$SA[i]),
-                          as.integer(in_data$treatments$IC[i]),as.integer(in_data$treatments$MP[i]),as.integer(in_data$treatments$MI[i]),
-                          as.integer(in_data$treatments$MF[i]),as.integer(in_data$treatments$MR[i]),as.integer(in_data$treatments$MC[i]),
-                          as.integer(in_data$treatments$MT[i]),as.integer(in_data$treatments$ME[i]),as.integer(in_data$treatments$MH[i]),
-                          as.integer(in_data$treatments$SM[i])),
-              "\n", sep = ""), file = pf)
-    
-  }
-  cat("\n", file = pf)
-  
-  #cultivars
-  cat("*CULTIVARS\n", file = pf)
-  cat("@C CR INGENO CNAME\n", file = pf)
-  for (i in 1:nrow(in_data$cultivars)) {
-    cat(paste(sprintf("%2d",as.integer(in_data$cultivars$C[i]))," ",sprintf("%2s", in_data$cultivars$CR[i]),
-              " ", sprintf("%6s",in_data$cultivars$INGENO[i])," ",sprintf("%-12s",in_data$cultivars$CNAME[i]),
-              "\n", sep = ""), file = pf)
-  }
-  cat("\n", file = pf)
-  
-  #fields
-  cat("*FIELDS\n", file = pf)
-  cat("@L ID_FIELD WSTA....  FLSA  FLOB  FLDT  FLDD  FLDS  FLST SLTX  SLDP  ID_SOIL    FLNAME\n", file = pf)
-  for (i in 1:nrow(in_data$treatments)) { 
-    
-    cat(paste(sprintf("%2d",as.integer(in_data$fields$L[i]))," ",sprintf("%-8s",in_data$fields$ID_FIELD[i]),
-              " ",sprintf("%-8s",in_data$fields$WSTA[i]),sprintf("%6d",as.integer(in_data$fields$FLSA[i])),
-              sprintf("%6d",as.integer(in_data$fields$FLOB[i])),sprintf("%6s",in_data$fields$FLDT[i]),
-              sprintf("%6d",as.integer(in_data$fields$FLDD[i])),sprintf("%6s",as.integer(in_data$fields$FLDS[i])),
-              sprintf("%6d",as.integer(in_data$fields$FLST[i]))," ",sprintf("%-4d",as.integer(in_data$fields$SLTX[i])),
-              sprintf("%6d",as.integer(in_data$fields$SLDP[i])),"  ",sprintf("%-10s",in_data$fields$ID_SOIL[i])," ",
-              sprintf("%-12s",in_data$fields$FLNAME[i]),"\n", sep=""),file=pf)
-    
-  }
-  
-  cat("\n", file = pf)
-  
-  cat("@L ..........XCRD ...........YCRD .....ELEV .............AREA .SLEN .FLWR .SLAS FLHST FHDUR\n",file=pf)
-  
-  for (i in 1:nrow(in_data$treatments)) { 
-    
-    
-    cat(paste(sprintf("%2d",as.integer(in_data$fields$L[i]))," ",sprintf("%15.3f",in_data$fields$XCRD[i])," ",
-              sprintf("%15.3f",in_data$fields$YCRD[i])," ",sprintf("%9d",as.integer(in_data$fields$ELEV[i]))," ",
-              sprintf("%17d",as.integer(in_data$fields$AREA[i]))," ",sprintf("%5d",as.integer(in_data$fields$SLEN[i]))," ",
-              sprintf("%5d",as.integer(in_data$fields$FLWR[i]))," ",sprintf("%5d",as.integer(in_data$fields$SLAS[i]))," ",
-              sprintf("%5d",as.integer(in_data$fields$FLHST[i]))," ",sprintf("%5d",as.integer(in_data$fields$FHDUR[i])),
-              "\n",sep=""),file=pf)
-    
-    
-  }
-  
-  
-  cat("\n",file=pf)
-  
-  #initial conditions
-  cat("*INITIAL CONDITIONS\n",file=pf)
-  cat("@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_properties$C))," ",sprintf("%5s",in_data$ini_cond_properties$PCR),
-            " ",sprintf("%5s",in_data$ini_cond_properties$ICDAT)," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRT)),
-            " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICND))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRN)),
-            " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRE))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICWD)),
-            " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRES))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICREN)),
-            " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICREP))," ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRIP)),
-            " ",sprintf("%5d",as.integer(in_data$ini_cond_properties$ICRID))," ",sprintf("%-12s",in_data$ini_cond_properties$ICNAME),
-            "\n",sep=""),file=pf)
-  cat("@C  ICBL  SH2O  SNH4  SNO3\n",file=pf)
-  
-  for (i in 1:nrow(in_data$ini_cond_values)) {
-    cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_values$C))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$ICBL[i])),
-              " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SH2O[i]))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SNH4[i])),
-              " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SNO3[i])),"\n",sep=""),file=pf)
-  }
-  cat("\n",file=pf)
-  
-  # Initial Conditions
-  # if(exists("ini_cond")) {
-  # 
-  #   cat("*INITIAL CONDITIONS\n", file = pf)
-  #   cat("@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME\n", file = pf)
-  #   cat(sprintf("%2d %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %5s %2s", 1, "MZ", -99, 1, -99, 1, 1, -99,  -99, -99, -99, -99, -99, -99), "\n", file = pf)
-  # 
-  #   cat("@C  ICBL  SH2O  SNH4  SNO3\n", file = pf)
-  #   for(i in 1:dim(ini_cond)[1]){
-  # 
-  #     if(information$system  == "rainfed"){
-  #       ## CAmbio en las Condiciones iniciales de Nitrogeno 5 Octubre 2015
-  #       #cat(paste(sprintf("%2d %5d %5.2f %5.2f %5.2f", 1, in_conditions[i, 1], in_conditions[i, 2], SNH4[i], SNO3[i])), "\n", file = pf)
-  #       cat(paste(sprintf("%2d %5d %5d %5.2f %5.2f", 1, ini_cond[i, 'SLB'], ini_cond[i, 'SDUL'], ini_cond[i, 'SLOC'], ini_cond[i , 'SLOC'])), "\n", file = pf)
-  #       
-  #     }
-  # 
-  #     if(information$system  == "irrigation"){
-  #       #cat(paste(sprintf("%2d %5d %5.0f %5.2f %5.2f", 1, in_conditions[i, 1], in_conditions[i, 2], SNH4[i], SNO3[i])), "\n", file = pf)
-  #       cat(paste(sprintf("%2d %5d %5.2f %5.2f %5.2f", 1, ini_cond[i, 'SLB'], ini_cond[i, 'SDUL'], ini_cond[i, 'SLOC'], ini_cond[i , 'SLOC'])), "\n", file = pf)
-  #     }
-  # 
-  # 
-  #   }
-  
-  
-  # }
-  
-  
-  
-  cat("\n", file = pf)
-  #planting details
-  cat("*PLANTING DETAILS\n",file = pf)
-  cat("@P PDATE EDATE  PPOP  PPOE  PLME  PLDS  PLRS  PLRD  PLDP  PLWT  PAGE  PENV  PLPH  SPRL                        PLNAME\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$planting$P))," ",sprintf("%5s",in_data$planting$PDATE),
-            " ",sprintf("%5s",in_data$planting$EDATE)," ",sprintf("%5d",as.integer(in_data$planting$PPOP)),
-            " ",sprintf("%5d",as.integer(in_data$planting$PPOE))," ",sprintf("%5s",in_data$planting$PLME),
-            " ",sprintf("%5s",in_data$planting$PLDS)," ",sprintf("%5d",as.integer(in_data$planting$PLRS)),
-            " ",sprintf("%5d",as.integer(in_data$planting$PLRD))," ",sprintf("%5d",as.integer(in_data$planting$PLDP)),
-            " ",sprintf("%5d",as.integer(in_data$planting$PLWT))," ",sprintf("%5d",as.integer(in_data$planting$PAGE)),
-            " ",sprintf("%5d",as.integer(in_data$planting$PENV))," ",sprintf("%5d",as.integer(in_data$planting$PLPH)),
-            " ",sprintf("%5d",as.integer(in_data$planting$SPRL))," ",sprintf("%29s",in_data$planting$PLNAME),
-            "\n", sep = ""), file = pf)
-  cat("\n", file = pf)
-  
-  
-  cat("*FERTILIZERS (INORGANIC)\n", file = pf)
-  cat("@F FDATE  FMCD  FACD  FDEP  FAMN  FAMP  FAMK  FAMC  FAMO  FOCD FERNAME                       \n", file = pf)
-  
-  for(i in 1:dim(in_data$fertilizer)[1]){
-    
-    cat(paste(sprintf("%2d %5i %5s %5i %5i %5.2f %5.2f %5.2f %5i %5i %5i %5-i", 1, in_data$fertilizer$FDATE[i], in_data$fertilizer$FMCD[i],
-                      in_data$fertilizer$FACD[i], in_data$fertilizer$FDEP[i], in_data$fertilizer$FAMN[i], in_data$fertilizer$FAMP[i], 
-                      in_data$fertilizer$FAMK[i], in_data$fertilizer$FAMC[i], in_data$fertilizer$FAMO[i], 
-                      in_data$fertilizer$FOCD[i], in_data$fertilizer$FERNAME[i]), '\n'), file = pf)
-    
-  }
-  
-  
-  cat("\n", file = pf)
-  
-  # ## Details Fertilization
-  # cat("*FERTILIZERS (INORGANIC)\n", file = pf)
-  # cat("@F FDATE  FMCD  FACD  FDEP  FAMN  FAMP  FAMK  FAMC  FAMO  FOCD FERNAME                       \n", file = pf)
-  # for(i in 1:dim(information$nitrogen_aplication$amount)[2]){
-  #   if(!is.na(information$nitrogen_aplication$amount[, i])) {
-  #     
-  #     
-  #     if(i == 1){
-  #       
-  #       cat(sprintf("%2s %5s %4s %5s %5i %5.1f %5i %5i %5i %5i %5i %1i", 1, information$nitrogen_aplication$day_app[, i], "FE005", "AP002", 
-  #                   4, information$nitrogen_aplication$amount[, i], 0, -99, -99, -99, -99, -99), "\n", file = pf)
-  #       
-  #     } else{
-  #       cat(sprintf("%2s %5s %4s %5s %5i %5.1f %5i %5i %5i %5i %5i %1i", 1, information$nitrogen_aplication$day_app[, i], "FE005", "AP002", 
-  #                   0, information$nitrogen_aplication$amount[, i], 0, -99, -99, -99, -99, -99), "\n", file = pf)
-  #     }
-  #     
-  #   }
-  #   
-  # }
-  # cat("\n", file = pf)
-  
-  #simulation controls
-  cat("*SIMULATION CONTROLS\n", file = pf)
-  cat("@N GENERAL     NYERS NREPS START SDATE RSEED SNAME.................... SMODEL\n", file = pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$sim_ctrl$N))," ",sprintf("%-11s",in_data$sim_ctrl$GENERAL),
-            " ",sprintf("%5d",as.integer(in_data$sim_ctrl$NYERS))," ",sprintf("%5d",as.integer(in_data$sim_ctrl$NREPS)),
-            " ",sprintf("%5s",in_data$sim_ctrl$START)," ",sprintf("%5s",in_data$sim_ctrl$SDATE),
-            " ",sprintf("%5d",as.integer(in_data$sim_ctrl$RSEED))," ",sprintf("%-25s",in_data$sim_ctrl$SNAME),
-            " ",sprintf("%-6s",in_data$sim_ctrl$SMODEL),"\n",sep=""),file=pf)
-  cat("@N OPTIONS     WATER NITRO SYMBI PHOSP POTAS DISES  CHEM  TILL   CO2\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$sim_ctrl$N))," ",sprintf("%-11s",in_data$sim_ctrl$OPTIONS),
-            " ",sprintf("%5s",in_data$sim_ctrl$WATER)," ",sprintf("%5s",in_data$sim_ctrl$NITRO),
-            " ",sprintf("%5s",in_data$sim_ctrl$SYMBI)," ",sprintf("%5s",in_data$sim_ctrl$PHOSP),
-            " ",sprintf("%5s",in_data$sim_ctrl$POTAS)," ",sprintf("%5s",in_data$sim_ctrl$DISES),
-            " ",sprintf("%5s",in_data$sim_ctrl$CHEM)," ",sprintf("%5s",in_data$sim_ctrl$TILL),
-            " ",sprintf("%5s",in_data$sim_ctrl$CO2),"\n",sep=""),file=pf)
-  cat("@N METHODS     WTHER INCON LIGHT EVAPO INFIL PHOTO HYDRO NSWIT MESOM MESEV MESOL\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$sim_ctrl$N))," ",sprintf("%-11s",in_data$sim_ctrl$METHODS),
-            " ",sprintf("%5s",in_data$sim_ctrl$WTHER)," ",sprintf("%5s",in_data$sim_ctrl$INCON),
-            " ",sprintf("%5s",in_data$sim_ctrl$LIGHT)," ",sprintf("%5s",in_data$sim_ctrl$EVAPO),
-            " ",sprintf("%5s",in_data$sim_ctrl$INFIL)," ",sprintf("%5s",in_data$sim_ctrl$PHOTO),
-            " ",sprintf("%5s",in_data$sim_ctrl$HYDRO)," ",sprintf("%5d",as.integer(in_data$sim_ctrl$NSWIT)),
-            " ",sprintf("%5s",in_data$sim_ctrl$MESOM)," ",sprintf("%5s",in_data$sim_ctrl$MESEV),
-            " ",sprintf("%5d",as.integer(in_data$sim_ctrl$MESOL)),"\n",sep=""),file=pf)
-  cat("@N MANAGEMENT  PLANT IRRIG FERTI RESID HARVS\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$sim_ctrl$N))," ",sprintf("%-11s",in_data$sim_ctrl$MANAGEMENT),
-            " ",sprintf("%5s",in_data$sim_ctrl$PLANT)," ",sprintf("%5s",in_data$sim_ctrl$IRRIG),
-            " ",sprintf("%5s",in_data$sim_ctrl$FERTI)," ",sprintf("%5s",in_data$sim_ctrl$RESID),
-            " ",sprintf("%5s",in_data$sim_ctrl$HARVS),"\n",sep=""),file=pf)
-  cat("@N OUTPUTS     FNAME OVVEW SUMRY FROPT GROUT CAOUT WAOUT NIOUT MIOUT DIOUT VBOSE CHOUT OPOUT\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$sim_ctrl$N))," ",sprintf("%-11s",in_data$sim_ctrl$OUTPUTS),
-            " ",sprintf("%5s",in_data$sim_ctrl$FNAME)," ",sprintf("%5s",in_data$sim_ctrl$OVVEW),
-            " ",sprintf("%5s",in_data$sim_ctrl$SUMRY)," ",sprintf("%5s",in_data$sim_ctrl$FROPT),
-            " ",sprintf("%5s",in_data$sim_ctrl$GROUT)," ",sprintf("%5s",in_data$sim_ctrl$CAOUT),
-            " ",sprintf("%5s",in_data$sim_ctrl$WAOUT)," ",sprintf("%5s",in_data$sim_ctrl$NIOUT),
-            " ",sprintf("%5s",in_data$sim_ctrl$MIOUT)," ",sprintf("%5s",in_data$sim_ctrl$DIOUT),
-            " ",sprintf("%5s",in_data$sim_ctrl$VBOSE)," ",sprintf("%5s",in_data$sim_ctrl$CHOUT),
-            " ",sprintf("%5s",in_data$sim_ctrl$OPOUT),"\n",sep=""),file=pf)
-  cat("\n", file = pf)
-  
-  #automatic management
-  cat("@  AUTOMATIC MANAGEMENT\n", file = pf)
-  cat("@N PLANTING    PFRST PLAST PH2OL PH2OU PH2OD PSTMX PSTMN\n", file = pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$auto_mgmt$N))," ",sprintf("%-11s",in_data$auto_mgmt$PLANTING),
-            " ",sprintf("%5s",in_data$auto_mgmt$PFRST)," ",sprintf("%5s",in_data$auto_mgmt$PLAST),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$PH2OL))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$PH2OU)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$PH2OD))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$PSTMX)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$PSTMN)),"\n",sep=""),file=pf)
-  cat("@N IRRIGATION  IMDEP ITHRL ITHRU IROFF IMETH IRAMT IREFF\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$auto_mgmt$N))," ",sprintf("%-11s",in_data$auto_mgmt$IRRIGATION),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$IMDEP))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$ITHRL)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$ITHRU))," ",sprintf("%5s",in_data$auto_mgmt$IROFF),
-            " ",sprintf("%5s",in_data$auto_mgmt$IMETH)," ",sprintf("%5d",as.integer(in_data$auto_mgmt$IRAMT)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$IREFF)),"\n",sep=""),file=pf)
-  cat("@N NITROGEN    NMDEP NMTHR NAMNT NCODE NAOFF\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$auto_mgmt$N))," ",sprintf("%-11s",in_data$auto_mgmt$NITROGEN),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$NMDEP))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$NMTHR)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$NAMNT))," ",sprintf("%5s",in_data$auto_mgmt$NCODE),
-            " ",sprintf("%5s",in_data$auto_mgmt$NAOFF),"\n",sep=""),file=pf)
-  cat("@N RESIDUES    RIPCN RTIME RIDEP\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$auto_mgmt$N))," ",sprintf("%-11s",in_data$auto_mgmt$RESIDUES),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$RIPCN))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$RTIME)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$RIDEP)),"\n",sep=""),file=pf)
-  cat("@N HARVEST     HFRST HLAST HPCNP HPCNR\n",file=pf)
-  cat(paste(sprintf("%2d",as.integer(in_data$auto_mgmt$N))," ",sprintf("%-11s",in_data$auto_mgmt$HARVEST),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$HFRST))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$HLAST)),
-            " ",sprintf("%5d",as.integer(in_data$auto_mgmt$HPCNP))," ",sprintf("%5d",as.integer(in_data$auto_mgmt$HPCNR)),
-            "\n",sep=""),file=pf)
-  
-  #close file
-  close(pf)
-  
-  #output
-  return(out_file)
 }
 
 
 
+find_assign2(quote({
+  a <- 1
+  b <- 2
+  a <- 3
+}))
 
 
-## Change the next lines for new initial conditions
-## make parameter for condiciones iniciales upper limit or lower limit (since looks wilt point)
-## add C function tu use multiple opciones is required during to run DSSAT
-## add read soil information from (file SOIL) to determine de upper limit for initial conditions
-## test
-## out_file <- "./JBID.RIX"
-# overwrite <- F
-
-if (file.exists(out_file)) {
-  if (overwrite) {
-    pf <- file(out_file, open = "w")
-  } else {
-    rnum <- round(runif(1, 10000, 20000), 0)
-    tmpvar <- unlist(strsplit(out_file, "/", fixed = T))
-    pth_ref <- paste(tmpvar[1:(length(tmpvar) - 1)], collapse = "/")
-    out_file <- paste(pth_ref, "/copy-", rnum, "_", tmpvar[length(tmpvar)], sep = "")
-    pf <- file(out_file, open = "w")
-  }
-} else {
-  pf <- file(out_file,open="w")
+f2 <- function(x = z) {
+  z <- 100
+  x
 }
+f2()
 
-# close(pf)
 
-
-for (i in 1:nrow(in_data$ini_cond_values)) {
-  
-  # cat(paste(sprintf("%2d",as.integer(in_data$ini_cond_values$C)), " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$ICBL[i])),
-  #           " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SH2O[i]))," ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SNH4[i])),
-  #           " ",sprintf("%5.0f",as.integer(in_data$ini_cond_values$SNO3[i])),"\n",sep=""),file=pf)
-  # 
-  # 
-  if(information$wilting_point  == "lower_limit"){
-    
-    cat(paste(sprintf("%2d %5d %5d %5.2f %5.2f", 1, in_data$ini_cond_values[i, 'ICBL'], in_data$ini_cond_values[i, 'SH20'],
-                      in_data$ini_cond_values[i, 'SNH4'], in_data$ini_cond_values[i , 'SNo3'])), "\n", file = pf)
-    
-  }
-  
-  if(information$wilting_point  == "upper_limit"){
-    
-    ## is necessary to read the information about SOIL file to identify upper limit so it is SDUL var in SOIL 
-    
-  }
-  
-  
+g <- function(x) {
+  y <- 2
+  UseMethod("g")
 }
-
-
-
-### All functions for X-file (modules)
-
-
-## make the archive
-## if the file exist this funcion make a diferent copy
-
-
-make_archive <- function(out_file, overwrite = F, encoding){
-  
-  options(encoding = encoding) 
-  
-  if (file.exists(out_file)) {
-    if (overwrite) {
-      pf <- file(out_file, open = "w")
-    } else {
-      rnum <- round(runif(1, 10000, 20000), 0)
-      tmpvar <- unlist(strsplit(out_file, "/", fixed = T))
-      pth_ref <- paste(tmpvar[1:(length(tmpvar) - 1)], collapse = "/")
-      out_file <- paste(pth_ref, "/copy-", rnum, "_", tmpvar[length(tmpvar)], sep = "")
-      pf <- file(out_file, open = "w")
-    }
-  } else {
-    pf <- file(out_file, open ="w")
-  }
-  
-  
-  
-  # close(pf)
-  return(pf)
-}
-
-## test
-# out_file <- "./JBID.RIX"
-# overwrite <- F
-
-# proof generate the connection between R and the file pf into de function make_archive
-# proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8")
-
-# cat('Whatever', file = proof)
-# close(proof)
-
-## this function needs a name of experiment, is a header for de x-file
-## make general stuff
-
-make_details <- function(name_exp, information){
-  
-  
-  # General stuff
-  
-  cat(paste0(information$exp_details, "\n"), file = name_exp)
-  cat("\n",file = name_exp)
-  cat("*GENERAL\n@PEOPLE\n", file = name_exp)
-  cat(paste(sprintf("%-12s", as.character(in_data$general$PEOPLE)), "\n", sep = ""), file = name_exp)
-  cat("@ADDRESS\n", file = name_exp)
-  cat(paste(sprintf("%-12s", as.character(in_data$general$ADDRESS)), "\n", sep = ""), file = name_exp)
-  cat("@SITE\n", file = name_exp)
-  cat(paste(sprintf("%-12s", as.character(in_data$general$SITE)), "\n", sep = ""), file = name_exp)
-  
-}
-
-# make_details(proof, information)
-# close(proof)
-
+g.numeric <- function(x) y
+g()
+g(10)

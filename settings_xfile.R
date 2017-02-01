@@ -17,7 +17,7 @@
 # The others parameters its not necessary to have outside the function
 
 
-make_details <- function(DETAILS, PEOPLE){
+make_details <- function(details, people){
   
   
   general <- list(DETAILS = details,
@@ -262,17 +262,29 @@ make_pDetails <- function(input_pDetails){
 # Simulation Controls
 
 # input_sControls <- list()
-# NYERS <- 20 ## Years for simulation
-# SMODEL <- 'MZCER046' # model to use
-# WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
-# NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
-# PLANT <- 'R'  # R = planting on reporting date ## Add the other options
-# IRRIG <- 'R'  ##  on reporting date, A automatically irragated, N Nothing, add the other options
-# FERTI = 'N' ## add more options
-# SDATE <- pmax(input_pDetails$PDATE - 20, 0)
+# input_sControls$NYERS <- 20 ## Years for simulation
+# input_sControls$SMODEL <- 'MZCER046' # model to use
+# input_sControls$WATER <- 'N'   ## Y = Utiliza balance Hidrico, N = No utiliza balance hidrico
+# input_sControls$NITRO <-  'N'  ## Y = utiliza balance nitrogeno, N =  no utiliza balance nitrogeno
+# input_sControls$PLANT <- 'R'  # R = planting on reporting date ## Add the other options
+# input_sControls$IRRIG <- 'R'  ##  on reporting date, A automatically irragated, N Nothing, add the other options
+# input_sControls$FERTI = 'N' ## add more options
+# input_sControls$SDATE <- pmax(input_pDetails$PDATE - 20, 0)
 
 
-make_sControls <- function(input_sControls){
+make_sControls <- function(input_sControls, PDATE){
+  
+  ## 
+  
+  NYERS <- input_sControls$NYERS 
+  SMODEL <-input_sControls$SMODEL
+  WATER <- input_sControls$WATER 
+  NITRO <- input_sControls$NITRO
+  PLANT <- input_sControls$PLANT
+  IRRIG <- input_sControls$IRRIG
+  FERTI <- input_sControls$FERTI 
+  SDATE <- input_sControls$SDATE
+
   
   sim_ctrl <- data.frame(N = 1, GENERAL = "GE", NYERS, NREPS = 1, START = "S", SDATE,
                                  RSEED = 2150, SNAME = "simctr1", SMODEL,
@@ -293,12 +305,13 @@ make_sControls <- function(input_sControls){
 }
 
 
-# make_sControls(input_sControls)
+# make_sControls(input_sControls, input_pDetails$PDATE)
 
 # if is necessary to specify sowing dates 
 # PFRST <- -99
 # PLAST <- -99
-# system <- 'irrigation'  ## Solo se habilita con IC = 1 (irrigation es como condiciones inicial del suelo menos drasticas)
+# system <- 'irrigation'  ## Solo se habilita con IC = 1 (irrigation es como condiciones inicial del suelo menos drasticas) 
+# este campo para futuras simulaciones o proyectos
 
 
 make_Amgmt <- function(PFRST, PLAST){

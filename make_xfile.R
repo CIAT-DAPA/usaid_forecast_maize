@@ -2,6 +2,36 @@
 ## Function to make x-file for DSSAT v4.6 from code R
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # To test
 
 information <- list()
