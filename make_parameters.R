@@ -3,10 +3,15 @@
 
 # El parametro region genera la informacion necesaria para ajustar los parametros de entrada para DSSAT v 4.6 necesarios a correr por
 # las regiones del proyecto con USAID
+dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+filename <- 'proof.MZX'
+  
+make_xfile_region("LaUnion", paste0(dir_run, filename))
 
-make_xfile_region("LaUnion")
 
-make_xfile_region <- function(region){
+## esta funcion se necesita agregar el condicional si el archivo existe en tal caso es mejor yo creo eliminarlo
+
+make_xfile_region <- function(region, filename){
   
   
   if(region == "LaUnion"){
@@ -16,7 +21,7 @@ make_xfile_region <- function(region){
     
     # out_file <- "./JBID.MZX"
     
-    out_file <- "./proof.MZX"
+    out_file <- filename     #"./proof.MZX"
     overwrite <- F
     details <- '*USAID-CIAT project Agroclimatic forecasts'
     people <- "Leonardo Ordoñez and Jeison Mesa"
