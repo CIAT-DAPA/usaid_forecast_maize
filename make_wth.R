@@ -1,8 +1,20 @@
 ## Make .WTH
+# the correct way to suppress warnings is suppressWarnings() instead of options(warn = -1) alone; similarly,
+# you should use suppressMessages() to suppress messages
+
+
+
+
 # year <- climate_df$year_2[i]
 # day_year <- climate_df$julian_day[i]
 
-### fucntion to generate .WTH for historical climate data set and scenarios data set 
+### Codes to generate .WTH for historical climate data set and scenarios data set 
+
+
+library(tidyverse)
+library(lubridate)
+
+# date_for_dssat. This function generate a date necessary to make .WTH (year + julian day), only tow digits to year.
 
 
 date_for_dssat <- function(year, day_year) {
@@ -97,6 +109,12 @@ date_for_dssat <- function(year, day_year) {
 # long <- -99
 
 
+
+# Function to write .WTH, needs dataset path out dir, lat, long and name of climate data 
+# the climate data example is:
+# data frame that contain 
+
+
 make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   
   
@@ -129,15 +147,15 @@ make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
 ### Funcion para generar tantos .WTH como escenarios climaticos de pronosticos
 ### Generar esta funcion a modo que el nombre del .WTH sea facil de cambiar
 
+# Example of climate scenarios
 
-# library(tidyverse)
-# library(lubridate)
+# path <- '//dapadfs/Workspace_cluster_9/USAID_Project/Product_3_agro-climatic_forecast/climate/data_forecast/output_resampling/Pronosticos_LaUnion/Escenarios/'
 
-path <- '//dapadfs/Workspace_cluster_9/USAID_Project/Product_3_agro-climatic_forecast/climate/data_forecast/output_resampling/Pronosticos_LaUnion/Escenarios/'
+path <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
+  
+climate_list <- list.files(path, pattern = 'escenario', full.names = T)
 
-climate_list <- list.files(path, pattern = 'esc', full.names = T)
-
-## function to extract some files you need
+## function to extract some files that you need
 
 # "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
 
@@ -149,21 +167,28 @@ filter_text <- function(data, matches){
 omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
 
 
-## pattern escenario es para filtrar siempre solo los escenarios
+# pattern escenario It's to always filter only the climate scenarios
+# Is possible to do this into a function ?
 
 climate_list <- list.files(path, pattern = 'escenario', full.names = T) %>%
                   filter_text(omit_files)
 
-# solucionar year hacer consulta al servidor del año actual
-# you need to have always the column called year because this is the var to change to actual date date
+
+# you need to have always the column called year because this is the var to change to actual date 
 # date is get to ask server for the local date, remeber this depend of the forecasts year to simulate
+# the data frame always needs to be
+# day month  year     tmax  tmin precip     srad   (name columns data frame)
+
 
 make_date <- function(data){
+  
+  # suppress warnings
+  options(warn = -1)
+  
   require(tidyverse)
   require(lubridate)
   
-  # data <- climate_list[1]
-  # data <- z[[1]]
+  # data <- climate_list_df[[1]]
   current_year <- Sys.Date() %>%
                     year()
   
@@ -176,15 +201,19 @@ make_date <- function(data){
   
   ## Add to generate variable to dssat_date
   
-  
-  data <-  tbl_df(data.frame(data, frcast_date))
+  data <-  tbl_df(data.frame(data, frcast_date)) %>%
+              mutate(julian_day = yday(frcast_date), year_2 = substr(year(frcast_date), 3, 4))
   
   return(data)
 }
 
 
-z <- lapply(climate_list, read_csv)
-z <- lapply(z, make_date)
+climate_list_df <- lapply(climate_list, read_csv) %>%
+                      lapply(make_date)
+
+# z <- lapply(climate_list_df, make_date)
+
+# suppressWarnings(expr)
 
 ##  generate all .WTH files to run DSSAT 
 ## Proof
@@ -217,17 +246,24 @@ z <- lapply(z, make_date)
 ## Prec = precip
 ## Date = day_dssat   # fecha para la construccion del Julian day necesario para que DSSAT entienda la informacion climatica
 
-out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/'
-z[[1]] %>%
-  mutate(day_dssat = frcast_date)
-
-z <- lapply(z, mutate, date_dssat = frcast_date)
 
 
-z[[1]] <- z[[1]]%>%
+
+
+out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+
+# climate_list_df[[1]] %>%
+  # mutate(day_dssat = frcast_date)
+
+# climate_list_df <- lapply(climate_list_df, mutate, date_dssat = frcast_date)
+
+
+climate_list_df[[1]] <- climate_list_df[[1]]%>%
   # mutate(date = dmy(paste(day, month, year, sep = '/'))) %>%
-  mutate(julian_day = yday(frcast_date), year_2 = substr(year(frcast_date), 3, 4))
+                          mutate(julian_day = yday(frcast_date), year_2 = substr(year(frcast_date), 3, 4))
 
+
+## make a function to do this
 date_dssat <- 0
 for(i in 1:dim(z[[1]])[1]){
 
@@ -237,5 +273,16 @@ for(i in 1:dim(z[[1]])[1]){
 
 z[[1]]$date_dssat <- date_dssat
 
-make_wth(z[[1]], out_dir, -99, -99, name_xfile_climate = 'proof.WTH')
+
+### quitar del make_wth la extencion de .WTH (la idea es que luego se pueda utilizar con .WTG o lo que sea)
+make_wth(z[[1]], out_dir, -99, -99, name_xfile_climate = 'proof')
+
+
+
+
+
+
+
+
+
 
