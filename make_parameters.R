@@ -3,15 +3,19 @@
 
 # El parametro region genera la informacion necesaria para ajustar los parametros de entrada para DSSAT v 4.6 necesarios a correr por
 # las regiones del proyecto con USAID
-dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-filename <- 'proof.MZX'
+# dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+# filename <- 'proof.MZX'
+# WSTA <- 'USAID001'
+# Region <- 'LaUnion'
   
-make_xfile_region("LaUnion", paste0(dir_run, filename))
+make_xfile_region(Region, WSTA, paste0(dir_run, filename))
 
 
-## esta funcion se necesita agregar el condicional si el archivo existe en tal caso es mejor yo creo eliminarlo
+## esta funcion se necesita agregar el condicional si el archivo existe en tal caso es mejor yo creo eliminarlo (make_xfile)
 
-make_xfile_region <- function(region, filename){
+
+
+make_xfile_region <- function(region, WSTA, filename){
   
   
   if(region == "LaUnion"){
@@ -36,7 +40,7 @@ make_xfile_region <- function(region, filename){
     INGENO <- 'CI0027' # Cultivar indentifier, this is the code for cultivar to run depend of crop
     CNAME <- 'PIO 30F35HRB_'  # Whatever code to identify the cultivar ran, maybe no too long string
     
-    WSTA <- 'CCCR8000' # Weather Station Code, its the same code to using in WTH file
+    # WSTA <- 'CCCR8000' # Weather Station Code, its the same code to using in WTH file
     ID_SOIL <- 'CCBuga0001' # Id soil to using in the SOIL.SOl
     
     
@@ -91,6 +95,8 @@ make_xfile_region <- function(region, filename){
     
     PFRST <- -99
     PLAST <- -99
+    
+    ## escritura del archivo experimental 
     
     proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
     
