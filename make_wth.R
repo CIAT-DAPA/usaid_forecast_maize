@@ -161,10 +161,23 @@ climate_list <- list.files(path, pattern = 'escenario', full.names = T)
 
 # "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
 
-filter_text <- function(data, matches){
+filter_text <- function(data, matches, different = F){ 
   
-  return(data[-grep(matches, data)])
+  if(different == F){
+    
+    return(data[grep(matches, data)])
+    
+  }
+  
+  if(different == T){
+    
+    return(data[-grep(matches, data)])
+    
+  }
+  
 }
+
+
 
 omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
 
@@ -173,7 +186,7 @@ omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
 # Is possible to do this into a function ?
 
 climate_list <- list.files(path, pattern = 'escenario', full.names = T) %>%
-                  filter_text(omit_files)
+                  filter_text(omit_files, different = T)
 
 
 # you need to have always the column called year because this is the var to change to actual date 
@@ -201,15 +214,12 @@ make_date <- function(data){
   frcast_date <- seq(init_frcast,
                   end_frcast, by = '1 day')
   
-  # is possible to eliminate some variables
+  # is possible to eliminate some variables?
   
   data <-  tbl_df(data.frame(data, frcast_date)) %>%
               mutate(julian_day = yday(frcast_date),
                      year_2 = as.numeric(substr(year(frcast_date), 3, 4))) %>%
               mutate(date_dssat = mapply(date_for_dssat, year_2, julian_day))
-  
-  
-  mapply(date_for_dssat, data$year_2, data$julian_day)
   
   return(data)
 }
@@ -259,8 +269,8 @@ long <- -99
 ## make a function to do this
 
 
-### quitar del make_wth la extencion de .WTH (la idea es que luego se pueda utilizar con .WTG o lo que sea)
-make_wth(data, out_dir, -99, -99, name_xfile_climate = 'proof')
+### quitar del make_wth la extension de .WTH (la idea es que luego se pueda utilizar con .WTG o lo que sea)
+make_wth(data, out_dir, -99, -99, name_xfile_climate = 'USAID001')
 
 
 
