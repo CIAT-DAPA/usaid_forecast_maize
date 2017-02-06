@@ -2,7 +2,7 @@
 
 dir_dssat <- 'C:/DSSAT46/'  ## its necessary to have the parameters .CUL, .ECO, .SPE Updated for running (calibrated the crop (MAize))
 dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-dir_soil <- ''
+dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # for now
 
 # Copy and paste files necessary to run DSSAT in a particular folder
 
@@ -24,7 +24,10 @@ dir_soil <- ''
 #   
 # }
 
+files_dssat(dir_dssat, dir_run, dir_soil)
+
 files_dssat <- function(dir_dssat, dir_run, dir_soil){
+  
   
   require(tidyverse)
 
@@ -38,6 +41,7 @@ files_dssat <- function(dir_dssat, dir_run, dir_soil){
 
   file.copy(exe_dssat, dir_run)
   file.copy(parameters, dir_run)
+  file.copy(dir_soil, dir_run)
 
   
 }
