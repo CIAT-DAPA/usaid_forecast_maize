@@ -119,6 +119,8 @@ make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   
   
   ## data <- z[[1]]
+  ## it's necessary to add name of wth (year + identify escenario)
+  
   Srad <- data$srad
   Tmax <- data$tmax
   Tmin <- data$tmin
@@ -199,12 +201,13 @@ make_date <- function(data){
   frcast_date <- seq(init_frcast,
                   end_frcast, by = '1 day')
   
-  # is possible to eliminate some variables?
+  # is possible to eliminate some variables
   
   data <-  tbl_df(data.frame(data, frcast_date)) %>%
               mutate(julian_day = yday(frcast_date),
-                     year_2 = as.numeric(substr(year(frcast_date), 3, 4)), 
-                     date_dssat = )
+                     year_2 = as.numeric(substr(year(frcast_date), 3, 4))) %>%
+              mutate(date_dssat = mapply(date_for_dssat, year_2, julian_day))
+  
   
   mapply(date_for_dssat, data$year_2, data$julian_day)
   
@@ -248,32 +251,16 @@ long <- -99
 ## Date = day_dssat   # fecha para la construccion del Julian day necesario para que DSSAT entienda la informacion climatica
 
 
-mapply(date_for_dssat, data$year_2, data$julian_day)
-
-
-date_for_dssat()
-
-out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-
 # climate_list_df[[1]] %>%
   # mutate(day_dssat = frcast_date)
 
 # climate_list_df <- lapply(climate_list_df, mutate, date_dssat = frcast_date)
 
 ## make a function to do this
-date_dssat <- 0
-
-for(i in 1:dim(data)[1]){
-
-  date_dssat[i] <- date_for_dssat(data[[1]]$year_2[i],data[[1]]$julian_day[i])
-
-}
-
-z[[1]]$date_dssat <- date_dssat
 
 
 ### quitar del make_wth la extencion de .WTH (la idea es que luego se pueda utilizar con .WTG o lo que sea)
-make_wth(z[[1]], out_dir, -99, -99, name_xfile_climate = 'proof')
+make_wth(data, out_dir, -99, -99, name_xfile_climate = 'proof')
 
 
 
