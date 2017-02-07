@@ -94,7 +94,8 @@ make_date <- function(data){
  
 
 load_climate <- function(dir_climate){
-  
+  require(tidyverse)
+  require(lubridate)
   climate_list <- list.files(dir_climate, pattern = 'escenario', full.names = T)
   
   ## function to extract some files that you need
@@ -142,5 +143,15 @@ files_dssat <- function(dir_dssat, dir_run, dir_soil){
   file.copy(parameters, dir_run)
   file.copy(dir_soil, dir_run)
   
+  
+}
+
+
+# dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+
+execute_dssat <- function(dir_run, smodel, batch_name){
+  
+  system(paste0("DSCSM046.EXE " , smodel," B ", batch_name), ignore.stdout = T)
+   
   
 }
