@@ -16,15 +16,19 @@
 # filename <- 'proof.MZX'
 # WSTA <- 'USAID001'
 # region <- "LaUnion"
+# PDATE <- 17274
+# SDATE <- 17274
+
+
   
-# make_xfile_region(region, WSTA, paste0(dir_run, filename))
+# make_xfile_region(region, WSTA, paste0(dir_run, filename), PDATE, SDATE)
 
 
 ## esta funcion se necesita agregar el condicional si el archivo existe en tal caso es mejor yo creo eliminarlo (make_xfile)
 
 
 
-make_xfile_region <- function(region, WSTA, filename){
+make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE){
   
   
   if(region == "LaUnion"){
@@ -48,12 +52,7 @@ make_xfile_region <- function(region, WSTA, filename){
     CR <- 'MZ'    # Crop Code, you need to search this parameter for de manual DSSAT (its different by crop)
     INGENO <- 'CI0027' # Cultivar indentifier, this is the code for cultivar to run depend of crop
     CNAME <- 'PIO 30F35HRB_'  # Whatever code to identify the cultivar to run, maybe no too long string
-    
-    
-    # WSTA <- 'CCCR8000' # Weather Station Code, its the same code to using in WTH file
-
-    
-    
+  
     ICBL <- c(25, 45, 95)
     SH20 <- -99
     SNH4 <- c(4.2, 4.4, 4.5)    # estas variables se pueden investigar cuales utilizar cuando no se tiene condiciones iniciales
@@ -78,8 +77,10 @@ make_xfile_region <- function(region, WSTA, filename){
     
     ## doing a comment that explain all parameters
     input_pDetails <- list()
-    input_pDetails$PDATE <- 80092 # Planting date
-    input_pDetails$SDATE <- pmax(input_pDetails$PDATE  - 20, 0)   ## Starting simulation. 20 days before planting date
+    # input_pDetails$PDATE <- 80092 # Planting date
+    input_pDetails$PDATE <- PDATE # Planting date
+    # input_pDetails$SDATE <- pmax(input_pDetails$PDATE  - 20, 0)   ## Starting simulation. 20 days before planting date
+    input_pDetails$SDATE <- SDATE
     input_pDetails$plant <- 'R'  # R = planting on reporting date
     ## Remember Simulation date starts 20 days before planting date when is possible
     input_pDetails$EDATE <- -99
