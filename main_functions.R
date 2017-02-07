@@ -148,10 +148,9 @@ files_dssat <- function(dir_dssat, dir_run, dir_soil){
 
 
 # dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-
-execute_dssat <- function(dir_run, smodel, batch_name){
+# execute_dssat(dir_run)
+execute_dssat <- function(dir_run){
   
-  system(paste0("DSCSM046.EXE " , smodel," B ", batch_name), ignore.stdout = T)
-   
+  system(paste0("DSCSM046.EXE " , "MZCER046"," B ", "DSSBatch.v46"), ignore.stdout = T, show.output.on.console = F)
   
 }
