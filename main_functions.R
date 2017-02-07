@@ -3,9 +3,38 @@
 # you should use suppressMessages() to suppress messages
 
 
-# Functions Necessary to make WTH
+##############################################################################################################
+#  # Functions Necessary to make WTH (.v46 file) 
+##############################################################################################################
 
-# function to load climate data
+# date_for_dssat. This function generate a date necessary to make .WTH (year + julian day), only tow digits to year.
+
+date_for_dssat <- function(year, day_year) {
+  
+  
+  if(nchar(day_year) == 1){
+    
+    data <- paste0(year, '00', day_year)
+  }
+  
+  if(nchar(day_year) == 2){
+    
+    data <- paste0(year, '0', day_year)
+  }
+  
+  if(nchar(day_year) == 3){
+    
+    data <- paste0(year, day_year)
+  }
+  
+  return(data)
+  
+}
+
+
+# function to filter files
+# the condition different is when you need a match with the conditions, different == T return the files that yo don't considered
+
 
 filter_text <- function(data, matches, different = F){ 
   
@@ -24,6 +53,7 @@ filter_text <- function(data, matches, different = F){
 }
 
 
+# function to make the real date for make WTH file
 
 make_date <- function(data){
   
@@ -56,6 +86,9 @@ make_date <- function(data){
 }
 
 
+
+# Function to load all climate scenarios
+
 # dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
 # x <- load_climate(dir_climate)
  
@@ -85,19 +118,12 @@ load_climate <- function(dir_climate){
 
 
 
+# function that Copy and paste files necessary to run DSSAT in a particular folder
 
-
-
-
-
-dir_dssat <- 'C:/DSSAT46/'  ## its necessary to have the parameters .CUL, .ECO, .SPE Updated for running (calibrated the crop (MAize))
-dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # for now
-
-# Copy and paste files necessary to run DSSAT in a particular folder
-
-
-files_dssat(dir_dssat, dir_run, dir_soil)
+# dir_dssat <- 'C:/DSSAT46/'  ## its necessary to have the parameters .CUL, .ECO, .SPE Updated for running (calibrated the crop (MAize))
+# dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+# dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # for now
+# files_dssat(dir_dssat, dir_run, dir_soil)
 
 files_dssat <- function(dir_dssat, dir_run, dir_soil){
   

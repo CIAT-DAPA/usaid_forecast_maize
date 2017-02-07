@@ -1,16 +1,13 @@
 ## Make .WTH
-
 # Function to write .WTH, needs dataset path, out dir, lat, long and name of WTH
 # the climate data example is:
 # data frame that contain 
 # day month  year     tmax  tmin precip     srad   (name columns data frame)
 
+# path_functions <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/'
+# source(paste0(path_functions, 'main_functions.R'))
 
 make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
-  
-  
-  ## data <- z[[1]]
-  ## it's necessary to add name of wth (year + identify escenario)
   
   Srad <- data$srad
   Tmax <- data$tmax
@@ -27,7 +24,7 @@ make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   cat("\n")
   cat(c("@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT"))
   cat("\n")
-  cat(sprintf("%6s %8.3f %8.3f %5.0f %5.1f %5.1f %5.2f %5.2f", "CCCR", lat, long, -99,-99, -99.0, 0, 0))
+  cat(sprintf("%6s %8.3f %8.3f %5.0f %5.1f %5.1f %5.2f %5.2f", "USCI", lat, long, -99,-99, -99.0, 0, 0))
   cat("\n")
   cat(c('@DATE  SRAD  TMAX  TMIN  RAIN'))
   cat("\n")
@@ -35,97 +32,51 @@ make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   sink()
 }
 
-
-
-### Funcion para generar tantos .WTH como escenarios climaticos de pronosticos
-### Generar esta funcion a modo que el nombre del .WTH sea facil de cambiar
-
-# Example of climate scenarios
-
-# path <- '//dapadfs/Workspace_cluster_9/USAID_Project/Product_3_agro-climatic_forecast/climate/data_forecast/output_resampling/Pronosticos_LaUnion/Escenarios/'
-
-path <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
-  
-climate_list <- list.files(path, pattern = 'escenario', full.names = T)
-
-## function to extract some files that you need
-
-# "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
-
-filter_text <- function(data, matches, different = F){ 
-  
-  if(different == F){
-    
-    return(data[grep(matches, data)])
-    
-  }
-  
-  if(different == T){
-    
-    return(data[-grep(matches, data)])
-    
-  }
-  
-}
+# is necessary to add lat and long? change te results? 
+# out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+# dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
+# x <- load_climate(dir_climate)
+# make_wth(x[[1]], out_dir, -99, -99, name_xfile_climate = 'USAID001')
 
 
 
-omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
 
 
-# pattern escenario It's to always filter only the climate scenarios
-# Is possible to do this into a function ?
-
-climate_list <- list.files(path, pattern = 'escenario', full.names = T) %>%
-                  filter_text(omit_files, different = T)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# maybe to the present simulation to calibrate the model 
 # you need to have always the column called year because this is the var to change to actual date 
 # date is get to ask server for the local date, remeber this depend of the forecasts year to simulate
 # the data frame always needs to be
 # day month  year     tmax  tmin precip     srad   (name columns data frame)
 
 
-make_date <- function(data){
-  
-  # suppress warnings
-  options(warn = -1)
-  
-  require(tidyverse)
-  require(lubridate)
-  
-  # data <- read_csv(climate_list[[1]])
-  current_year <- Sys.Date() %>%
-                    year()
-  
-  init_frcast <- ydm(paste(current_year, data$day[1], data$month[1], sep = "-"))
-  end_frcast <- ymd(init_frcast) + ddays(dim(data)[1] - 1)
-  
-  
-  frcast_date <- seq(init_frcast,
-                  end_frcast, by = '1 day')
-  
-  # is possible to eliminate some variables?
-  
-  data <-  tbl_df(data.frame(data, frcast_date)) %>%
-              mutate(julian_day = yday(frcast_date),
-                     year_2 = as.numeric(substr(year(frcast_date), 3, 4))) %>%
-              mutate(date_dssat = mapply(date_for_dssat, year_2, julian_day))
-  
-  return(data)
-}
-
-
-climate_list_df <- lapply(climate_list, read_csv) %>%
-                      lapply(make_date)
-
 
 ##  generate all .WTH files to run DSSAT 
 ## Proof
-data <- climate_list_df[[1]]
-out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-lat <- -99
-long <- -99
+# data <- climate_list_df[[1]]
+# out_dir <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+# lat <- -99
+# long <- -99
 
 # climate_df <- read_csv(paste0(path, station, '.csv'))%>%
 #   mutate(date = dmy(paste(day, month, year, sep = '/'))) %>%
@@ -161,7 +112,7 @@ long <- -99
 
 
 ### quitar del make_wth la extension de .WTH (la idea es que luego se pueda utilizar con .WTG o lo que sea)
-make_wth(data, out_dir, -99, -99, name_xfile_climate = 'USAID001')
+
 
 
 
