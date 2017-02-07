@@ -101,7 +101,7 @@ make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE){
     input_sControls$PLANT <- 'R'  # R = planting on reporting date ## Add the other options
     input_sControls$IRRIG <- 'N'  ##  R =  on reporting date, A automatically irragated, N Nothing, add the other options
     input_sControls$FERTI = 'N' ## add more options
-    input_sControls$SDATE <- pmax(input_pDetails$PDATE - 20, 0)
+    input_sControls$SDATE <- SDATE
 
     
     PFRST <- -99
