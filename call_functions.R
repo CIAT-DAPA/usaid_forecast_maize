@@ -7,7 +7,7 @@ dir_dssat <- 'C:/DSSAT46/'  ## its necessary to have the parameters .CUL, .ECO, 
 dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
 dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # it is not only the folder is all path when is the soil file
 dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
-Region <- "LaUnion" 
+region <- "LaUnion" 
 WSTA <-"USAID001"
 PDATE <- 17274
 SDATE <- 17274
@@ -24,20 +24,20 @@ source(paste0(path_functions, 'functions_xfile.R'))
 
 
 ## is possible to generate a parameters in a list? maybe is better
-run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, Region, WSTA, PDATE, SDATE){
+run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, PDATE, SDATE){
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
   
   ## in this point its necessary to add all functions that can to wirte files (x-file, weather, soil, batch)
   
-  make_xfile_region(Region, WSTA, paste0(dir_run, 'proof.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
+  make_xfile_region(region, WSTA, paste0(dir_run, 'proof.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
   
   ## add function to load climate datasets 
   
-  
+  climate_scenarios <- load_climate(dir_climate)
   
   ## add code that write multiple WTH as many as climate scenarios
-  climate_scenarios <- load_climate(dir_climate)
+  
   make_wth(climate_scenarios[[1]], out_dir, -99, -99, name_xfile_climate = 'USAID001')
   
   
