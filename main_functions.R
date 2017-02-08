@@ -156,7 +156,7 @@ execute_dssat <- function(dir_run){
 }
 
 # dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
-# region <- "LaUnion/" 
+# region <- "LaUnion" 
 # day <- 1
 
 # make_id_run(dir_run, region, day)
@@ -165,8 +165,13 @@ make_id_run <- function(dir_run, region, day){
   
   if (!dir.exists(paste0(dir_run, region, day))) { 
     
-    dir.create(paste0(dir_run, region, day), showWarnings = F, recursive = TRUE, mode = "777")
-
+    dir.create(paste0(dir_run, region, '/', day), showWarnings = F, recursive = TRUE, mode = "777")
+    return(paste0(dir_run, region, day))
+    
   }
   
+  
 }
+
+
+
