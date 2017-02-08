@@ -1,11 +1,11 @@
 ## script to proof all functions generated
-# library(tidyverse)
-# library(lubridate)
+library(tidyverse)
+library(lubridate)
 
 path_functions <- "D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/"  # path when is the functions necessary to run by region, scenario and multiple days to platform USAID forecast
 
 dir_dssat <- 'C:/DSSAT46/'  ## its necessary to have the parameters .CUL, .ECO, .SPE Updated for running (calibrated the crop (Maize))
-dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
+dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/'
 dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # it is not only the folder is all path when is the soil file
 dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
 region <- "LaUnion" 
@@ -29,13 +29,13 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
   
+  dir_base <- paste0(dir_run, 'temporal/')
   
-  
-  dir_run <- make_id_run(dir_run, region, day) ## make folder by PDATE? is it confusing them?
+  dir_run_id <- make_id_run(dir_base, region, day) ## make folder by PDATE? is it confusing them?
   
   ## in this point its necessary to add all functions that can to wirte files (x-file, weather, soil, batch)
   
-  make_xfile_region(region, WSTA, paste0(dir_run, '/', 'proof.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
+  make_xfile_region(region, WSTA, paste0(dir_run_id, 'USAID.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
   
   ## add function to load climate datasets 
   
@@ -43,27 +43,37 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   ## add code that write multiple WTH as many as climate scenarios
   
-  make_wth(climate_scenarios[[1]], out_dir, -99, -99, name_xfile_climate = 'USAID001')
+  make_wth(climate_scenarios[[1]], dir_run_id, -99, -99, name_xfile_climate = 'USAID001')
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   # Make Batch
   
-  CSMbatch(crop, name, paste0(dir_run, filename))
+  CSMbatch("MAIZE", 'USAID.MZX', paste0(dir_run_id, "DSSBatch.v46"))
   
   # add files necessay to run DSSAT
   
   
-  files_dssat(dir_dssat, dir_run, dir_soil)
+  files_dssat(dir_dssat, dir_run_id, dir_soil)
   
   ### here add function to execute DSSAT
-  execute_dssat(dir_run)
+  execute_dssat(dir_run_id)
+  # setwd()
   
-  
+  unlink(paste0(dir_run_id), recursive=TRUE)
+  # setwd(dir_run)
   ## here add function to load de output necessary
   
   
   ## make a Descriptive Statistics
-  
   
   
 }
