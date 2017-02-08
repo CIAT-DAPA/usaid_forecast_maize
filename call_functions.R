@@ -43,17 +43,9 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   ## add code that write multiple WTH as many as climate scenarios
   
-  make_wth(climate_scenarios[[1]], dir_run_id, -99, -99, name_xfile_climate = 'USAID001')
+  name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  make_wth(climate_scenarios[[day]], dir_run_id, -99, -99, name_xfile_climate)
   
   # Make Batch
   
@@ -68,7 +60,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   execute_dssat(dir_run_id)
   # setwd()
   
-  unlink(paste0(dir_run_id), recursive=TRUE)
+  unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
+  
   # setwd(dir_run)
   ## here add function to load de output necessary
   
