@@ -41,7 +41,7 @@ make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, FL){
     out_file <- filename     #./proof.MZX
     overwrite <- F
     details <- '*USAID-CIAT project Agroclimatic forecasts'
-    people <- "Leonardo Ordoñez and Jeison Mesa and Julian Ramirez"
+    people <- "Leonardo Ordonez and Jeison Mesa and Julian Ramirez"
     
     IC <- 0  # Inital conditions
     MI <- 0  # input if you are going to use a irrigation, 1 = TRUE, 0 = FALSe 
@@ -108,6 +108,7 @@ make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, FL){
     PLAST <- -99
     
     ## escritura del archivo experimental 
+    options(encoding = "UTF-8")
     
     proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
     

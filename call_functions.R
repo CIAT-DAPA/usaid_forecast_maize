@@ -9,7 +9,7 @@ dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/'
 dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # it is not only the folder is all path when is the soil file
 dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
 region <- "LaUnion" 
-WSTA <-"USAID001"
+WSTA <-"USAID"
 PDATE <- 17274
 SDATE <- 17274
 day <- 1 ## 1 primer dia a simular 2 segundo dia etc....
@@ -30,6 +30,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
   
+  options(encoding = "UTF-8")
+  
   dir_base <- paste0(dir_run, 'temporal/')
   
   dir_run_id <- make_id_run(dir_base, region, day) ## make folder by PDATE? is it confusing them?
@@ -42,7 +44,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   climate_scenarios <- load_climate(dir_climate)
   
-  make_xfile_region(region, WSTA, paste0(dir_run_id, 'USAID.MZX'), PDATE, SDATE, 1:length(climate_scenarios)) ## Remember them can to change the filename to different regions
+  
+  make_xfile_region(region, paste0(WSTA, sprintf("%.3d", 1:99)), paste0(dir_run_id, 'USAID.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
   
   ## add code that write multiple WTH as many as climate scenarios
   ## add ciclo for 
@@ -66,7 +69,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   execute_dssat(dir_run_id)
   # setwd()
   
-  unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
+  
   
   # setwd(dir_run)
   ## here add function to load de output necessary
@@ -74,7 +77,9 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   ## make a Descriptive Statistics
   
+  ##
   
+  unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
 }
 
 

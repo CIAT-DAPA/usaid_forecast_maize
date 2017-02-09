@@ -30,6 +30,8 @@ make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   cat("\n")
   cat(cbind(sprintf("%5s %5.1f %5.1f %5.1f %5.1f", date, Srad, Tmax, Tmin, Prec)), sep = "\n")
   sink()
+  
+  
 }
 
 # is necessary to add lat and long? change te results? 
