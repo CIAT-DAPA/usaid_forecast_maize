@@ -170,11 +170,11 @@ make_id_run <- function(dir_run, region, day){
     
     dir.create(paste0(dir_run, region, '/', day), showWarnings = F, recursive = TRUE, mode = "777")
     # system('chmod 777 *.*')
-    return(paste0(dir_run, region, '/', day, '/'))
+    
     
   }
   
-  
+  return(paste0(dir_run, region, '/', day, '/'))
 }
 
 
@@ -183,7 +183,7 @@ make_mult_wth <- function(scenarios, dir_run, filename){
   scenarios <- climate_scenarios
   num_scenarios <- 1:length(scenarios)
   filename <- paste0(filename, sprintf("%.3d", num_scenarios))
-  mapply(make_wth, scenarios, dir_run_id, -99, -99, filename) 
+  mapply(make_wth, scenarios, dir_run, -99, -99, filename) 
 
 }
 
