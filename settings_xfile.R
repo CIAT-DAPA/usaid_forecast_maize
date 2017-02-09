@@ -288,7 +288,7 @@ make_sControls <- function(input_sControls, PDATE){
                                  RSEED = 2150, SNAME = "simctr1", SMODEL,
                                  OPTIONS = "OP", WATER, NITRO, SYMBI = "N",
                                  PHOSP = "N", POTAS = "N", DISES = "N", CHEM = "N", TILL = "N",
-                                 CO2 = "M", METHODS = "ME", WTHER = "M", INCON = "M", LIGHT = "E",
+                                 CO2 = "N", METHODS = "ME", WTHER = "M", INCON = "M", LIGHT = "E",
                                  EVAPO = "R", INFIL = "S", PHOTO = "C", HYDRO = "R",
                                  NSWIT = 1, MESOM = "G", MESEV = "S", MESOL =2, MANAGEMENT = "MA",
                                  PLANT, IRRIG,
