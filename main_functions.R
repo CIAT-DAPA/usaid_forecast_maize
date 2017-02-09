@@ -188,3 +188,29 @@ make_mult_wth <- function(scenarios, dir_run, filename){
 }
 
 
+## Make PDATE and SDATE
+# data <- climate_scenarios
+# number_days <- 45
+make_PS <- function(data, number_days){
+  
+  require(tidyverse)
+  require(lubridate)
+  require(magrittr)
+  
+  PDATE <- data[[1]] %>%
+    filter( row_number() == 1:number_days) %>%
+    select(date_dssat) %>%
+    extract2(1) %>%
+    as.numeric()
+  
+  SDATE <- data[[1]] %>%
+    filter( row_number() == 1) %>%
+    select(date_dssat) %>%
+    extract2(1) %>%
+    as.numeric()
+  
+  dates_inputs <- crossing(PDATE, SDATE)
+  
+  return(dates_inputs)
+  
+}
