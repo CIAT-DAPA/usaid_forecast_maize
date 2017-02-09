@@ -11,7 +11,7 @@
 # path_functions <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/'
 # source(paste0(path_functions, 'settings_xfile.R'))
 # source(paste0(path_functions, 'functions_xfile.R'))
-  
+
 # dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Proof_run/'
 # filename <- 'proof.MZX'
 # WSTA <- 'USAID001'
@@ -28,7 +28,7 @@
 
 
 
-make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE){
+make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, FL){
   
   
   if(region == "LaUnion"){
@@ -112,7 +112,7 @@ make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE){
     proof <- make_archive(out_file, overwrite = F,  encoding = "UTF-8") 
     
     write_details(proof, make_details(details, people))
-    write_treatments(proof, make_treatments(IC, MI, MF, MH))
+    write_treatments(proof, make_treatments(IC, MI, MF, MH, FL))  ## the parameter FL its to identify the run with a specific .WTH
     write_cultivars(proof, make_cultivars(CR, INGENO, CNAME))
     write_fields(proof, make_fields(WSTA, ID_SOIL))
     # Las corridas serán entonces de acuerdo al potencial en rendimiento que puedan alcanzar las plantas

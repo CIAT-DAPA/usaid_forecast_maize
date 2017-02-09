@@ -46,7 +46,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   ## add ciclo for 
   
   
-  make_mult_wth(climate_scenarios, dir_run_id, "USAID")
+  invisible(make_mult_wth(climate_scenarios, dir_run_id, "USAID"))
   # name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
   
   # make_wth(climate_scenarios[[day]], dir_run_id, -99, -99, name_xfile_climate)
