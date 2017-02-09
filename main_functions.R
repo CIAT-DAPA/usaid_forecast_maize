@@ -187,6 +187,9 @@ make_mult_wth <- function(scenarios, dir_run, filename){
 
 }
 
-
-
+make_mult_trt <- function(IC, MI, MF, MH){
+  
+  make_treatments(IC, MI, MF, MH)
+  
+}
 

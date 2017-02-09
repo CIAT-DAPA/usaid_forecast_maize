@@ -43,9 +43,9 @@ make_details <- function(details, people){
 # MI <- 0         # 1 turn on field for irrigation level, 0 turn off field for irrigation level
 # MF <- 0         # 1 turn on field for fertilizier level, 0 turn off field for fertilizier level
 # MH <- 0         # 1 turn on field for harvest level, 0 turn off field for harvest level
+# FL <- 1:200
 
-
-make_treatments <- function(IC, MI, MF, MH){
+make_treatments <- function(IC, MI, MF, MH, FL){
 
   # Treatments
   
@@ -54,7 +54,7 @@ make_treatments <- function(IC, MI, MF, MH){
   #  1 1 0 0 P1                         1  1  0  1  1  0  1  0  0  0  0  1  1
   
   treatments <- data.frame(N = 1, R = 1, O = 0, C = 0, TNAME = "USAID",
-                           CU = 1, FL = 1, SA = 0, IC, MP = 1,
+                           CU = 1, FL, SA = 0, IC, MP = 1,
                            MI, MF, MR = 0, MC = 0, MT = 0, ME = 0, MH, SM = 1)
   
   
@@ -62,7 +62,7 @@ make_treatments <- function(IC, MI, MF, MH){
   
 }
 
-# make_treatments(IC, MI, MF, MH)
+# make_treatments(IC, MI, MF, MH, FL)
 
 # Parameters
 # CR <- 'MZ'    # Crop Code, you need to search this parameter for de manual DSSAT (its different by crop)
