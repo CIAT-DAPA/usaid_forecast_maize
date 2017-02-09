@@ -31,7 +31,8 @@ climate_scenarios <- load_climate(dir_climate)
 input_dates <- make_PS(climate_scenarios, number_days)
 
 
-## is possible to generate a parameters in a list? maybe is better
+## its possible to generate a parameters in a list? maybe is better
+# run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, input_dates)
 run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_dates){
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
@@ -39,12 +40,12 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   options(encoding = "UTF-8")
   
   dir_base <- paste0(dir_run, 'temporal/')
-  
+
   dir_run_id <- make_id_run(dir_base, region, select_day) ## make folder by PDATE? is it confusing them?
   
   ## in this point its necessary to add all functions that can to wirte files (x-file, weather, soil, batch)
   
-  
+
   
   ## add function to load climate datasets 
   
@@ -75,7 +76,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   ## add code that write multiple WTH as many as climate scenarios
   ## add ciclo for 
   
-  
+
   invisible(make_mult_wth(climate_scenarios, dir_run_id, name_files))
   # name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
   
@@ -103,8 +104,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   ## make a Descriptive Statistics
   
   ##
-  
-  unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
+  setwd(dir_run)
+  # unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
 }
 
 
