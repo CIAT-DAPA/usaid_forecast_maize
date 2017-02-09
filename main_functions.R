@@ -107,8 +107,8 @@ load_climate <- function(dir_climate){
   # Is possible to do this into a function ?
   
   climate_list <- list.files(dir_climate, pattern = 'escenario', full.names = T) %>%
-    filter_text(omit_files, different = T)
-  
+    filter_text(omit_files, different = T) %>%
+    .[1:99]             ## luego quitar el cargar solo las 99 veces
   
   climate_list_df <- lapply(climate_list, read_csv) %>%
     lapply(make_date)
@@ -187,9 +187,4 @@ make_mult_wth <- function(scenarios, dir_run, filename){
 
 }
 
-make_mult_trt <- function(IC, MI, MF, MH){
-  
-  make_treatments(IC, MI, MF, MH)
-  
-}
 
