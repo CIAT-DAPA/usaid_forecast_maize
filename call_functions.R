@@ -9,7 +9,7 @@ dir_run <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/'
 dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # it is not only the folder is all path when is the soil file
 dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
 region <- "LaUnion" 
-WSTA <-"USAID"
+name_files <-"USAID"   ## Weather station (generic), x-file name and for the indicate the run into the DSSBatch
 PDATE <- 17274
 SDATE <- 17274
 day <- 1 ## 1 primer dia a simular 2 segundo dia etc....
@@ -26,7 +26,7 @@ source(paste0(path_functions, 'functions_xfile.R'))
 
 
 ## is possible to generate a parameters in a list? maybe is better
-run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, PDATE, SDATE, day){
+run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, name_files, PDATE, SDATE, day){
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
   
@@ -45,20 +45,20 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   climate_scenarios <- load_climate(dir_climate)
   
   
-  make_xfile_region(region, paste0(WSTA, sprintf("%.3d", 1:99)), paste0(dir_run_id, 'USAID.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
+  make_xfile_region(region, paste0(name_files, sprintf("%.3d", 1:99)), paste0(dir_run_id, name_files, '.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
   
   ## add code that write multiple WTH as many as climate scenarios
   ## add ciclo for 
   
   
-  invisible(make_mult_wth(climate_scenarios, dir_run_id, "USAID"))
+  invisible(make_mult_wth(climate_scenarios, dir_run_id, name_files))
   # name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
   
   # make_wth(climate_scenarios[[day]], dir_run_id, -99, -99, name_xfile_climate)
   
   # Make Batch
   
-  CSMbatch("MAIZE", 'USAID.MZX', paste0(dir_run_id, "DSSBatch.v46"))
+  CSMbatch("MAIZE", paste0(name_files, '.MZX'), paste0(dir_run_id, "DSSBatch.v46"))
   
   # add files necessay to run DSSAT
   
