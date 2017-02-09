@@ -14,6 +14,7 @@ PDATE <- 17274
 SDATE <- 17274
 day <- 1 ## 1 primer dia a simular 2 segundo dia etc....
 
+
 ## add source functions
 
 source(paste0(path_functions, 'make_wth.R'))
@@ -42,18 +43,13 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   climate_scenarios <- load_climate(dir_climate)
   
   ## add code that write multiple WTH as many as climate scenarios
-  
-  make_wth(climate_scenarios[[1]], dir_run_id, -99, -99, name_xfile_climate = 'USAID001')
-  
+  ## add ciclo for 
   
   
+  make_mult_wth(climate_scenarios, dir_run_id, "USAID")
+  # name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
   
-  
-  
-  
-  
-  
-  
+  # make_wth(climate_scenarios[[day]], dir_run_id, -99, -99, name_xfile_climate)
   
   # Make Batch
   
@@ -68,7 +64,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   execute_dssat(dir_run_id)
   # setwd()
   
-  unlink(paste0(dir_run_id), recursive=TRUE)
+  unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
+  
   # setwd(dir_run)
   ## here add function to load de output necessary
   
