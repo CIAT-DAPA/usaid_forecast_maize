@@ -1,6 +1,7 @@
 ## script to proof all functions generated
 library(tidyverse)
 library(lubridate)
+library(magrittr)
 
 path_functions <- "D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/"  # path when is the functions necessary to run by region, scenario and multiple days to platform USAID forecast
 
@@ -10,9 +11,9 @@ dir_soil <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/Runs/CC.SOL'  # it is
 dir_climate <- 'D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/stations/Forecasts/Escenarios/'
 region <- "LaUnion" 
 name_files <-"USAID"   ## Weather station (generic), x-file name and for the indicate the run into the DSSBatch
-PDATE <- 17274
-SDATE <- 17274
-day <- 1 ## 1 primer dia a simular 2 segundo dia etc....
+# PDATE <- 17274
+# SDATE <- 17274
+select_day <- 1 ## 1 primer dia a simular 2 segundo dia etc....  select day to simulate from first date of climate forecast o then
 
 
 ## add source functions
@@ -26,7 +27,7 @@ source(paste0(path_functions, 'functions_xfile.R'))
 
 
 ## is possible to generate a parameters in a list? maybe is better
-run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, name_files, PDATE, SDATE, day){
+run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, name_files, select_day ){
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
   
@@ -34,7 +35,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, name_fi
   
   dir_base <- paste0(dir_run, 'temporal/')
   
-  dir_run_id <- make_id_run(dir_base, region, day) ## make folder by PDATE? is it confusing them?
+  dir_run_id <- make_id_run(dir_base, region, select_day ) ## make folder by PDATE? is it confusing them?
   
   ## in this point its necessary to add all functions that can to wirte files (x-file, weather, soil, batch)
   
@@ -43,7 +44,22 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, name_fi
   ## add function to load climate datasets 
   
   climate_scenarios <- load_climate(dir_climate)
+  # select_day <- day
   
+  
+  ## Quizá lo siguiente agregarlo a una funcion para ser facil de modificar luego 
+  
+  PDATE <- climate_scenarios[[1]] %>%
+    filter( row_number() == select_day) %>%
+    select(date_dssat) %>%
+    extract2(1) 
+  
+  SDATE <- climate_scenarios[[1]] %>%
+    filter( row_number() == 1) %>%
+    select(date_dssat) %>%
+    extract2(1) 
+
+  # PDATE + day 
   
   make_xfile_region(region, paste0(name_files, sprintf("%.3d", 1:99)), paste0(dir_run_id, name_files, '.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
   
