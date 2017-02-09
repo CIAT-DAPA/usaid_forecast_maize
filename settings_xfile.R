@@ -18,8 +18,7 @@
 
 
 make_details <- function(details, people){
-  
-  
+
   general <- list(DETAILS = details,
                   PEOPLE = people,
                   addres = "CIAT",
@@ -54,7 +53,7 @@ make_treatments <- function(IC, MI, MF, MH){
   #  1 1 0 0 P1                         1  1  0  1  1  0  1  0  0  0  0  1  1
   
   treatments <- data.frame(N = 1:99, R = 1, O = 0, C = 0, TNAME = "USAID",
-                           CU = 1, 1:99, SA = 0, IC, MP = 1,
+                           CU = 1, FL = 1:99, SA = 0, IC, MP = 1,
                            MI, MF, MR = 0, MC = 0, MT = 0, ME = 0, MH, SM = 1)
   
   
@@ -94,7 +93,7 @@ make_fields <- function(WSTA, ID_SOIL){
   # @L ID_FIELD WSTA....  FLSA  FLOB  FLDT  FLDD  FLDS  FLST SLTX  SLDP  ID_SOIL    FLNAME
   #  1 -99      CCBR1502   -99   -99 DR000   -99   -99     0 SL      30  CCBuga0001 Calibracion
   # 
-  fields <- data.frame(L = 1, ID_FIELD = "USAID", WSTA, FLSA = -99, FLOB = -99, FLDT = "DR000",
+  fields <- data.frame(L = 1:99, ID_FIELD = "USAID", WSTA, FLSA = -99, FLOB = -99, FLDT = "DR000",
                                FLDD = -99, FLDS = -99, FLST = -99, SLTX = -99, SLDP = -99, ID_SOIL,
                                FLNAME = "FIELD01", XCRD = -99, YCRD = -99, ELEV = -99, AREA = -99, SLEN=-99,
                                FLWR = -99, SLAS = -99, FLHST = -99, FHDUR=-99)

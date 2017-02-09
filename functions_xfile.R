@@ -8,8 +8,11 @@ make_archive <- function(out_file, overwrite = F, encoding){
   
   options(encoding = encoding) 
   
+  
+  
   if (file.exists(out_file)) {
     if (overwrite) {
+      options(encoding = encoding) 
       pf <- file(out_file, open = "w")
     } else {
       rnum <- round(runif(1, 10000, 20000), 0)
@@ -19,10 +22,12 @@ make_archive <- function(out_file, overwrite = F, encoding){
       pf <- file(out_file, open = "w")
     }
   } else {
+    options(encoding = encoding) 
     pf <- file(out_file, open ="w")
   }
   
   # close(pf)
+  
   return(pf)
 }
 
@@ -43,6 +48,7 @@ write_details <- function(name_exp, information){
   
   
   # General stuff
+  options(encoding = "UTF-8")
   
   cat(paste0(information$DETAILS, "\n"), file = name_exp)
   cat("\n",file = name_exp)
