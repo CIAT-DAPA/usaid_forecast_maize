@@ -182,7 +182,7 @@ make_mult_wth <- function(scenarios, dir_run, filename){
   
   scenarios <- climate_scenarios
   num_scenarios <- 1:length(scenarios)
-  filename <- paste0(name_xfile_climate, sprintf("%.3d", num_scenarios))
+  filename <- paste0(filename, sprintf("%.3d", num_scenarios))
   mapply(make_wth, scenarios, dir_run_id, -99, -99, filename) 
 
 }

@@ -45,7 +45,7 @@ make_details <- function(details, people){
 # MH <- 0         # 1 turn on field for harvest level, 0 turn off field for harvest level
 # FL <- 1:200
 
-make_treatments <- function(IC, MI, MF, MH, FL){
+make_treatments <- function(IC, MI, MF, MH){
 
   # Treatments
   
@@ -53,8 +53,8 @@ make_treatments <- function(IC, MI, MF, MH, FL){
   # @N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM
   #  1 1 0 0 P1                         1  1  0  1  1  0  1  0  0  0  0  1  1
   
-  treatments <- data.frame(N = 1, R = 1, O = 0, C = 0, TNAME = "USAID",
-                           CU = 1, FL, SA = 0, IC, MP = 1,
+  treatments <- data.frame(N = 1:99, R = 1, O = 0, C = 0, TNAME = "USAID",
+                           CU = 1, 1:99, SA = 0, IC, MP = 1,
                            MI, MF, MR = 0, MC = 0, MT = 0, ME = 0, MH, SM = 1)
   
   

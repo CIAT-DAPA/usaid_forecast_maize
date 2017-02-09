@@ -36,11 +36,13 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, dir_climate, region, WSTA, P
   
   ## in this point its necessary to add all functions that can to wirte files (x-file, weather, soil, batch)
   
-  make_xfile_region(region, WSTA, paste0(dir_run_id, 'USAID.MZX'), PDATE, SDATE) ## Remember them can to change the filename to different regions
+  
   
   ## add function to load climate datasets 
   
   climate_scenarios <- load_climate(dir_climate)
+  
+  make_xfile_region(region, WSTA, paste0(dir_run_id, 'USAID.MZX'), PDATE, SDATE, 1:length(climate_scenarios)) ## Remember them can to change the filename to different regions
   
   ## add code that write multiple WTH as many as climate scenarios
   ## add ciclo for 
