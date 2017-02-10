@@ -1,5 +1,5 @@
 
-run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, select_day, cultivar){
+run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, select_day, cultivar, climate){
   
   ## make dir to run based on a folder input by climate scenario (folder_001, ..... , folder_100) 
   
@@ -43,7 +43,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   ## add ciclo for 
   
   
-  invisible(make_mult_wth(climate_scenarios, dir_run_id, name_files))
+  invisible(make_mult_wth(climate, dir_run_id, name_files))
   # name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
   
   # make_wth(climate_scenarios[[day]], dir_run_id, -99, -99, name_xfile_climate)
