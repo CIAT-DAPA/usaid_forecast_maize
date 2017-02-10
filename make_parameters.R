@@ -19,7 +19,7 @@
 # PDATE <- 17274
 # SDATE <- 17274
 # cultivar <- 'CI0027'
-
+# ID_SOIL <- 'CCBuga0001'
   
 # make_xfile_region(region, WSTA, paste0(dir_run, filename), PDATE, SDATE)
 
@@ -28,7 +28,7 @@
 
 
 
-make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, cultivar){
+make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, cultivar, ID_SOIL){
   
   
   if(region == "LaUnion"){
@@ -36,7 +36,7 @@ make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, cultivar){
     
     ## Parameters necessary to write experimental file
     
-    ID_SOIL <- 'CCBuga0001'  # Id soil to using in the SOIL.SOl, change by region 
+    # ID_SOIL <- 'CCBuga0001'  # Id soil to using in the SOIL.SOl, change by region 
     
     out_file <- filename     #./proof.MZX
     overwrite <- F
