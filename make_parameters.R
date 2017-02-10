@@ -18,7 +18,7 @@
 # region <- "LaUnion"
 # PDATE <- 17274
 # SDATE <- 17274
-
+# cultivar <- 'CI0027'
 
   
 # make_xfile_region(region, WSTA, paste0(dir_run, filename), PDATE, SDATE)
@@ -28,7 +28,7 @@
 
 
 
-make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, FL){
+make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, cultivar){
   
   
   if(region == "LaUnion"){
@@ -50,7 +50,7 @@ make_xfile_region <- function(region, WSTA, filename, PDATE, SDATE, FL){
     
     
     CR <- 'MZ'    # Crop Code, you need to search this parameter for de manual DSSAT (its different by crop)
-    INGENO <- 'CI0027' # Cultivar indentifier, this is the code for cultivar to run depend of crop
+    INGENO <- cultivar # Cultivar indentifier, this is the code for cultivar to run depend of crop
     CNAME <- 'PIO 30F35HRB_'  # Whatever code to identify the cultivar to run, maybe no too long string
   
     ICBL <- c(25, 45, 95)
