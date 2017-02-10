@@ -214,3 +214,12 @@ make_PS <- function(data, number_days){
   return(dates_inputs)
   
 }
+
+tidy_climate <- function(dir_climate){
+  
+  
+  climate_scenarios <- load_climate(dir_climate)
+  input_dates <- make_PS(climate_scenarios, number_days)
+  return(list(input_dates = input_dates, climate_scenarios = climate_scenarios))
+}
+

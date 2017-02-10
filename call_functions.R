@@ -26,12 +26,15 @@ source(paste0(path_functions, 'make_parameters.R'))
 source(paste0(path_functions, 'main_functions.R'))
 source(paste0(path_functions, 'settings_xfile.R'))
 source(paste0(path_functions, 'functions_xfile.R'))
+source(paste0(path_functions, 'run_dssat.R'))
 
 
+# input_dates <- tidy_climate(dir_climate)
+## Climate data wit PDATE and SDATE tidy
+climate_PS <- tidy_climate(dir_climate)
+# climate_scenarios <- load_climate(dir_climate)
+# input_dates <- make_PS(climate_scenarios, number_days)
 
-climate_scenarios <- load_climate(dir_climate)
-input_dates <- make_PS(climate_scenarios, number_days)
-
-run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, select_day, cultivar)
+run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, climate_PS$input_dates, select_day, cultivar, climate_PS$climate)
 
 
