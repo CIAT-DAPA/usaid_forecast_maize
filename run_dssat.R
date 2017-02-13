@@ -66,6 +66,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   # setwd(dir_run)
   ## here add function to load de output necessary
   
+  summary_out <- read_summary(dir_run_id)
+  
   
   ## make a Descriptive Statistics
   
