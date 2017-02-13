@@ -7,11 +7,11 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   
   dir_base <- paste0(dir_run, 'temporal/')
   
-  dir_run_id <- make_id_run(dir_base, region, select_day) ## make folder by PDATE? is it confusing them?
+  dir_run_id <- make_id_run(dir_base, region, cultivar, select_day) ## make folder by PDATE? is it confusing them?
   
   ## in this point its necessary to add all functions that can to wirte files (x-file, weather, soil, batch)
   
-  
+  # paste0(dir_base, region, '/', cultivar,  '/', select_day)
   
   ## add function to load climate datasets 
   
@@ -37,7 +37,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   SDATE <- input_dates$SDATE[select_day]
   
   
-  make_xfile_region(region, paste0(name_files, sprintf("%.3d", 1:99)), paste0(dir_run_id, name_files, '.MZX'), PDATE, SDATE, cultivar) ## Remember them can to change the filename to different regions
+  make_xfile_region(region, paste0(name_files, sprintf("%.3d", 1:99)), paste0(dir_run_id, name_files, '.MZX'), PDATE, SDATE, cultivar, ID_SOIL) ## Remember them can to change the filename to different regions
   
   ## add code that write multiple WTH as many as climate scenarios
   ## add ciclo for 
@@ -69,7 +69,10 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   
   ## make a Descriptive Statistics
   
+  
   ## Write files in a particular folder
+  
+  
   
   setwd(dir_run)
   # unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)

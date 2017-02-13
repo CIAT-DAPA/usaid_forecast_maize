@@ -164,17 +164,17 @@ execute_dssat <- function(dir_run){
 
 # make_id_run(dir_run, region, day)
 
-make_id_run <- function(dir_run, region, day){
+make_id_run <- function(dir_run, region, cultivar, day){
   
-  if (!dir.exists(paste0(dir_run, region, day))) { 
+  if (!dir.exists(paste0(dir_run, region, '/', cultivar, '/', day))) { 
     
-    dir.create(paste0(dir_run, region, '/', day), showWarnings = F, recursive = TRUE, mode = "777")
+    dir.create(paste0(dir_run, region, '/', cultivar, '/', day), showWarnings = F, recursive = TRUE, mode = "777")
     # system('chmod 777 *.*')
-    
+    # paste0(dir_base, region, '/', cultivar,  '/', select_day)
     
   }
   
-  return(paste0(dir_run, region, '/', day, '/'))
+  return(paste0(dir_run, region, '/', cultivar, '/', day, '/'))
 }
 
 

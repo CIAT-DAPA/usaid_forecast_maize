@@ -44,10 +44,11 @@ source(paste0(path_functions, 'run_dssat.R'))
 ## Climate data wit PDATE and SDATE tidy
 climate_PS <- tidy_climate(dir_climate)
 # climate_scenarios <- load_climate(dir_climate)
-# input_dates <- make_PS(climate_scenarios, number_days)
 # input_dates <- climate_PS$input_dates
 # climate <- climate_PS$climate
 
+## simulating by input_dates from rows
+## select day is a variable that configure when starting the simulation from forescast climate
 run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, climate_PS$input_dates, select_day, cultivar, climate_PS$climate)
 
 
