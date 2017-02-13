@@ -223,3 +223,21 @@ tidy_climate <- function(dir_climate){
   return(list(input_dates = input_dates, climate_scenarios = climate_scenarios))
 }
 
+
+
+read_summary <- function(dir_run){
+  
+  summary_out <- read_table(paste0(dir_run, 'summary.OUT'), skip = 3 , na = "*******")
+  
+  
+  return(summary_out)
+}
+
+
+
+
+
+
+
+
+

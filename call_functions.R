@@ -52,3 +52,15 @@ climate_PS <- tidy_climate(dir_climate)
 run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, climate_PS$input_dates, select_day, cultivar, climate_PS$climate)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
