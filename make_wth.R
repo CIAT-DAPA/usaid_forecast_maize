@@ -9,10 +9,10 @@
 
 make_wth <- function(data, out_dir, lat, long, name_xfile_climate){
   
-  Srad <- data$srad
-  Tmax <- data$tmax
-  Tmin <- data$tmin
-  Prec <- data$precip
+  Srad <- data$sol_rad
+  Tmax <- data$t_max
+  Tmin <- data$t_min
+  Prec <- data$prec
   date <- data$date_dssat 
   
   sink(paste0(out_dir, name_xfile_climate, '.WTH'), append = F)
