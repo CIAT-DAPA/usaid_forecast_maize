@@ -100,15 +100,15 @@ load_climate <- function(dir_climate){
   
   ## function to extract some files that you need
   
-  omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
+  # omit_files <- "escenario_max.csv|escenario_min.csv|escenario_prom.csv"
   
   
   # pattern escenario It's to always filter only the climate scenarios
   # Is possible to do this into a function ?
   
-  climate_list <- list.files(dir_climate, pattern = 'escenario', full.names = T) %>%
-    filter_text(omit_files, different = T) %>%
-    .[1:99]             ## luego quitar el cargar solo las 99 veces
+  # climate_list <- list.files(dir_climate, pattern = 'escenario', full.names = T) %>%
+    # filter_text(omit_files, different = T) %>%
+    # .[1:99]             ## luego quitar el cargar solo las 99 veces
   
   climate_list_df <- lapply(climate_list, read_csv) %>%
     lapply(make_date)
@@ -180,7 +180,7 @@ make_id_run <- function(dir_run, region, day){
 
 make_mult_wth <- function(scenarios, dir_run, filename){
   
-  scenarios <- climate_scenarios
+  # scenarios <- climate_scenarios
   num_scenarios <- 1:length(scenarios)
   filename <- paste0(filename, sprintf("%.3d", num_scenarios))
   mapply(make_wth, scenarios, dir_run, -99, -99, filename) 
