@@ -223,7 +223,7 @@ tidy_climate <- function(dir_climate){
   return(list(input_dates = input_dates, climate_scenarios = climate_scenarios))
 }
 
-
+### read output
 
 read_summary <- function(dir_run){
   
@@ -238,6 +238,34 @@ read_summary <- function(dir_run){
 
 
 
+read_weather <- function(data, skip_lines, i){
+  
+  require(data.table)
+  require(tidyverse)
+  require(lubridate)
+  options(warn = -1)
+  
+  fread(data, skip = skip_lines, stringsAsFactors = F, na.strings = "NaN", header = T, colClasses = list(
+    integer = 1:3, numeric = 4:18)) %>%
+    tbl_df() %>%
+    mutate_all(funs(as.numeric)) %>%
+    mutate(scenario = rep(i, length(DOY)))
+
+  
+}
+
+read_mult_weather <- function(data){
+  
+  require(tidyverse)
+  
+  lines <- readLines(data)
+  posToread <- grep("@YEAR", lines) - 1
+  weather <- lapply(1:length(posToread), function(i) read_weather(data, posToread[i], i)) %>%
+    bind_rows()
+  
+  return(weather)
+  
+}
 
 
 
