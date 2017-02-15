@@ -258,6 +258,7 @@ read_mult_weather <- function(data){
   
   require(tidyverse)
   
+  data <- paste0(data, 'Weather.OUT')
   lines <- readLines(data)
   posToread <- grep("@YEAR", lines) - 1
   weather <- lapply(1:length(posToread), function(i) read_weather(data, posToread[i], i)) %>%
