@@ -37,7 +37,7 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   SDATE <- input_dates$SDATE[select_day]
   DATE <- input_dates$DATE[select_day]
   
-  DATE <-paste(day(DATE), sprintf("%.2d", month(DATE)), year(DATE), sep = '/')
+  # DATE <- paste(day(DATE), sprintf("%.2d", month(DATE)), year(DATE), sep = '/')
   
   ## id_soil <- ID_SOIL
   make_xfile_region(region, paste0(name_files, sprintf("%.3d", 1:99)), paste0(dir_run_id, name_files, '.MZX'), PDATE, SDATE, cultivar, id_soil) ## Remember them can to change the filename to different regions
@@ -55,9 +55,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   
   ### here add function to execute DSSAT
   execute_dssat(dir_run_id)
-  # setwd()
+ 
   
-  # setwd(dir_run)
   ## here add function to load de output necessary
   
   summary_out <- read_summary(dir_run_id) %>%
@@ -76,35 +75,35 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   # soil <- ID_SOIL
   
   yield <- calc_desc(summary_out, "yield_0") %>%
-              tidy_descriptive(region, soil, cultivar, DATE, DATE)
+              tidy_descriptive(region, id_soil, cultivar, DATE, DATE)
   
   d_dry <- calc_desc(summary_out, "d_dry") %>%
-              tidy_descriptive(region, soil, cultivar, DATE, DATE)
+              tidy_descriptive(region, id_soil, cultivar, DATE, DATE)
   
   prec_acu <- calc_desc(summary_out, "prec_acu") %>%
-                tidy_descriptive(region, soil, cultivar, DATE, DATE)
+                tidy_descriptive(region, id_soil, cultivar, DATE, DATE)
   
   t_max_acu <- calc_desc(weather_out, "t_max_acu") %>%
-                tidy_descriptive(region, soil, cultivar, DATE, DATE)
+                tidy_descriptive(region, id_soil, cultivar, DATE, DATE)
   
   t_min_acu <- calc_desc(weather_out, "t_min_acu") %>%
-    tidy_descriptive(region, soil, cultivar, DATE, DATE)
+    tidy_descriptive(region, id_soil, cultivar, DATE, DATE)
   
   bio_acu <- calc_desc(summary_out, "bio_acu") %>%
-    tidy_descriptive(region, soil, cultivar, DATE, DATE)
+    tidy_descriptive(region, id_soil, cultivar, DATE, DATE)
   
-  dplyr::bind_rows(list(yield, 
-                        d_dry, 
-                        prec_acu,
-                        t_max_acu,
-                        t_min_acu,
-                        bio_acu))
+  summary_stats <- dplyr::bind_rows(list(yield, 
+                                         d_dry, 
+                                         prec_acu,
+                                         t_max_acu,
+                                         t_min_acu,
+                                         bio_acu))
 
   
   ## Write files in a particular folder
   
-  
-  
   setwd(dir_run)
+  return(summary_stats)
+  
   # unlink(paste0(strsplit(dir_run_id, "/")[[1]], collapse = "/"), recursive = TRUE)
 }
