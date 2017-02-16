@@ -299,11 +299,9 @@ CV <- function(var){
 calc_desc <- function(data, var){
   
   data <- select_(data, var)
-  
   reclas_call <- lazyeval::interp(~ mgment_no_run(var), var = as.name(var))
   
   data <- data %>%
-    
     mutate_(.dots = setNames(list(reclas_call), var)) %>%
     summarise_each(funs(avg = mean(.), 
                         median = median(.), 
@@ -317,11 +315,9 @@ calc_desc <- function(data, var){
                         sd = sd(.), 
                         perc_5 = quantile(., 0.05),
                         perc_95 = quantile(., 0.95), 
-                        coef_var = CV(.)))
-
+                        coef_var = CV(.))) %>%
+    mutate(measure = paste(var)) %>%
+    select(measure, everything())
   return(data)
-  
 }
-
-
 
