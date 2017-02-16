@@ -61,13 +61,20 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   ## here add function to load de output necessary
   
   summary_out <- read_summary(dir_run_id) %>%
-                  mutate(yield_0 = HWAH, d_dry = MDAT-PDAT, prec_acu = PRCP)   ## rename some variables for the server
+                  mutate(yield_0 = HWAH,
+                         d_dry = MDAT-PDAT,
+                         prec_acu = PRCP,
+                         bio_acu = CWAM)   ## rename some variables for the server
   
-  weather_out <- read_mult_weather(dir_run_id)
+  weather_out <- read_mult_weather(dir_run_id) %>%
+                  group_by(scenario) %>%
+                  summarise(t_max_acu = sum(TMXD), t_min_acu = sum(TMND)) 
+                  
   
   ## make a Descriptive Statistics
   
   # soil <- ID_SOIL
+  
   yield <- calc_desc(summary_out, "yield_0") %>%
               tidy_descriptive(region, soil, cultivar, DATE, DATE)
   
@@ -77,8 +84,22 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   prec_acu <- calc_desc(summary_out, "prec_acu") %>%
                 tidy_descriptive(region, soil, cultivar, DATE, DATE)
   
-  dplyr::bind_rows(list(yield, d_dry, prec_acu))
+  t_max_acu <- calc_desc(weather_out, "t_max_acu") %>%
+                tidy_descriptive(region, soil, cultivar, DATE, DATE)
   
+  t_min_acu <- calc_desc(weather_out, "t_min_acu") %>%
+    tidy_descriptive(region, soil, cultivar, DATE, DATE)
+  
+  bio_acu <- calc_desc(summary_out, "bio_acu") %>%
+    tidy_descriptive(region, soil, cultivar, DATE, DATE)
+  
+  dplyr::bind_rows(list(yield, 
+                        d_dry, 
+                        prec_acu,
+                        t_max_acu,
+                        t_min_acu,
+                        bio_acu))
+
   
   ## Write files in a particular folder
   
