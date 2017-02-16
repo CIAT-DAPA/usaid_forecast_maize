@@ -215,7 +215,7 @@ make_PS <- function(data, number_days){
   
 }
 
-tidy_climate <- function(dir_climate){
+tidy_climate <- function(dir_climate, number_days){
   
   
   climate_scenarios <- load_climate(dir_climate)
@@ -265,6 +265,61 @@ read_mult_weather <- function(data){
     bind_rows()
   
   return(weather)
+  
+}
+
+
+mgment_no_run <- function(data){
+  
+  ifelse(data == -99, 0, data)
+  
+}
+
+
+
+
+conf_lower <- function(var){
+  
+  t.test(var)$conf.int[1]
+}
+
+conf_upper <- function(var){
+  
+  t.test(var)$conf.int[2]
+}
+
+
+CV <- function(var){
+  
+  (sd(var)/mean(var))*100
+  
+}
+
+
+calc_desc <- function(data, var){
+  
+  data <- select_(data, var)
+  
+  reclas_call <- lazyeval::interp(~ mgment_no_run(var), var = as.name(var))
+  
+  data <- data %>%
+    
+    mutate_(.dots = setNames(list(reclas_call), var)) %>%
+    summarise_each(funs(avg = mean(.), 
+                        median = median(.), 
+                        min = min(.), 
+                        max = max(.), 
+                        quar_1 = quantile(., 0.25), 
+                        quar_2 = quantile(., 0.50), 
+                        quar_3 = quantile(., 0.75), 
+                        conf_lowe = conf_lower(.), 
+                        conf_upper = conf_upper(.), 
+                        sd = sd(.), 
+                        perc_5 = quantile(., 0.05),
+                        perc_95 = quantile(., 0.95), 
+                        coef_var = CV(.)))
+
+  return(data)
   
 }
 
