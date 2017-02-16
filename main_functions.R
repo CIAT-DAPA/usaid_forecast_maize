@@ -209,20 +209,41 @@ make_PS <- function(data, number_days){
     extract2(1) %>%
     as.numeric()
   
-  dates_inputs <- crossing(PDATE, SDATE)
+  DATE <- data[[1]] %>%
+    filter( row_number() == 1:number_days) %>%
+    select(frcast_date) %>%
+    extract2(1)
+  
+  dates_inputs <- crossing(PDATE, SDATE) %>%
+                    mutate(DATE = DATE)
   
   return(dates_inputs)
   
 }
 
 tidy_climate <- function(dir_climate, number_days){
-  
-  
+
+
   climate_scenarios <- load_climate(dir_climate)
   input_dates <- make_PS(climate_scenarios, number_days)
   return(list(input_dates = input_dates, climate_scenarios = climate_scenarios))
 }
 
+
+# tidy_climate <- function(dir_climate, number_days){
+#   
+#   require(magrittr)
+#   
+#   climate_scenarios <- load_climate(dir_climate)
+#   
+#   input_dates <- make_PS(climate_scenarios, number_days)
+#   
+#   dates <- climate_scenarios[[1]] %>%
+#               select(frcast_date) %>%
+#               extract2(1)
+#   
+#   return(list(input_dates = input_dates, climate_scenarios = climate_scenarios, date = dates))
+# }
 ### read output
 
 read_summary <- function(dir_run){
@@ -323,8 +344,9 @@ calc_desc <- function(data, var){
 
 
 
-
 tidy_descriptive <- function(data, W_station, soil, cultivar, start, end){
+  
+  require(lubridate)
   
   data <- data %>%
     mutate(weather_station = W_station,
@@ -342,5 +364,4 @@ tidy_descriptive <- function(data, W_station, soil, cultivar, start, end){
   return(data)
   
 }
-
 

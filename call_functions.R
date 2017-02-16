@@ -47,6 +47,7 @@ climate_PS <- tidy_climate(dir_climate, number_days)
 # input_dates <- climate_PS$input_dates
 # climate <- climate_PS$climate
 
+
 ## simulating by input_dates from rows
 ## select day is a variable that configure when starting the simulation from forescast climate
 run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, climate_PS$input_dates, select_day, cultivar, climate_PS$climate, ID_SOIL)
