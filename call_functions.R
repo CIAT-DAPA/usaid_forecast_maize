@@ -4,6 +4,7 @@ library(lubridate)
 library(magrittr)
 library(data.table)
 library(lazyeval)
+library(foreach)
 
 
 
@@ -26,7 +27,7 @@ number_days <- 45 ## Numero de dias a simular desde el primer dia del pronostico
 
 
 ## agregar out dir donde van a estar las salidas (el .csv que se necesita para el servidor)
-out_dir <- 
+name_csv <- "prueba.csv"
   
 
 ## add source functions
@@ -67,7 +68,8 @@ run_mult_dssat(dir_dssat,
                climate_PS$climate, 
                ID_SOIL,
                # number_days)
-               number_days)
+               5,
+               name_csv)
 
 
 

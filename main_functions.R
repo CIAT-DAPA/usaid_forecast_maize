@@ -367,7 +367,7 @@ tidy_descriptive <- function(data, W_station, soil, cultivar, start, end){
 
 
 
-run_mult_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, select_day, cultivar, climate, id_soil, number_days){
+run_mult_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, select_day, cultivar, climate, id_soil, number_days, out_csv){
   
   # proof
   
@@ -386,7 +386,7 @@ run_mult_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, inp
   } 
   
   out_summary <- bind_rows(out_summary)
-  
+  write_csv(out_summary, paste0(dir_run , name_csv))
   return(out_summary)
 }
 
