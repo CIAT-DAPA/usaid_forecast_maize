@@ -5,6 +5,8 @@ library(magrittr)
 library(data.table)
 library(lazyeval)
 
+
+
 path_functions <- "D:/CIAT/USAID/DSSAT/multiple_runs/R-DSSATv4.6/"  # path when is the functions necessary to run by region, scenario and multiple days to platform USAID forecast
 
 dir_dssat <- 'C:/DSSAT46/'  ## its necessary to have the parameters .CUL, .ECO, .SPE Updated for running (calibrated the crop (Maize))
@@ -50,10 +52,22 @@ climate_PS <- tidy_climate(dir_climate, number_days)
 
 ## simulating by input_dates from rows
 ## select day is a variable that configure when starting the simulation from forescast climate
-run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, climate_PS$input_dates, select_day, cultivar, climate_PS$climate, ID_SOIL)
+
+# run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, climate_PS$input_dates, 2, cultivar, climate_PS$climate, ID_SOIL)
 
 
-
+run_mult_dssat(dir_dssat,
+               dir_soil,
+               dir_run,
+               region,
+               name_files,
+               climate_PS$input_dates,
+               select_day, 
+               cultivar,
+               climate_PS$climate, 
+               ID_SOIL,
+               # number_days)
+               number_days)
 
 
 

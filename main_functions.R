@@ -331,7 +331,7 @@ calc_desc <- function(data, var){
                         quar_1 = quantile(., 0.25), 
                         quar_2 = quantile(., 0.50), 
                         quar_3 = quantile(., 0.75), 
-                        conf_lowe = conf_lower(.), 
+                        conf_lower = conf_lower(.), 
                         conf_upper = conf_upper(.), 
                         sd = sd(.), 
                         perc_5 = quantile(., 0.05),
@@ -363,5 +363,30 @@ tidy_descriptive <- function(data, W_station, soil, cultivar, start, end){
   
   return(data)
   
+}
+
+
+
+run_mult_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, select_day, cultivar, climate, id_soil, number_days){
+  
+  # proof
+  
+  # number_days <- 3
+  # input_dates <- climate_PS$input_dates
+  # climate <- climate_PS$climate
+  # id_soil <- ID_SOIL
+  iterators <- rep(1:number_days, by = select_day)  
+  
+  out_summary <- foreach(i = iterators) %do% {
+    
+    # print(i)
+    run_dssat(dir_dssat, dir_soil, dir_run, region, name_files, input_dates, i, cultivar, climate, id_soil)
+    
+    
+  } 
+  
+  out_summary <- bind_rows(out_summary)
+  
+  return(out_summary)
 }
 
