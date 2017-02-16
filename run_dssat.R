@@ -39,14 +39,8 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   
   make_xfile_region(region, paste0(name_files, sprintf("%.3d", 1:99)), paste0(dir_run_id, name_files, '.MZX'), PDATE, SDATE, cultivar, ID_SOIL) ## Remember them can to change the filename to different regions
   
-  ## add code that write multiple WTH as many as climate scenarios
-  ## add ciclo for 
-  
   
   invisible(make_mult_wth(climate, dir_run_id, name_files))
-  # name_xfile_climate <- paste0('USAID', sprintf("%.3d", day))
-  
-  # make_wth(climate_scenarios[[day]], dir_run_id, -99, -99, name_xfile_climate)
   
   # Make Batch
   
@@ -61,16 +55,19 @@ run_dssat <- function(dir_dssat, dir_soil, dir_run, region, name_files, input_da
   execute_dssat(dir_run_id)
   # setwd()
   
-  
-  
   # setwd(dir_run)
   ## here add function to load de output necessary
   
-  summary_out <- read_summary(dir_run_id)
-  
+  summary_out <- read_summary(dir_run_id) %>%
+                  mutate(yield_0 = HWAH, d_dry = MDAT-PDAT)   ## rename some variables for the server
+  weather_out <- read_mult_weather(dir_run_id)
   
   ## make a Descriptive Statistics
   
+  calc_desc(summary_out, "yield_0")
+  calc_desc(summary_out, "d_dry")
+  
+  calc_desc(summary_out, "HWAH")
   
   ## Write files in a particular folder
   
