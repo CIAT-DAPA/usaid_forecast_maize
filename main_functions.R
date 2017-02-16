@@ -321,3 +321,26 @@ calc_desc <- function(data, var){
   return(data)
 }
 
+
+
+
+tidy_descriptive <- function(data, W_station, soil, cultivar, start, end){
+  
+  data <- data %>%
+    mutate(weather_station = W_station,
+           soil = soil, 
+           cultivar = cultivar, 
+           start = start, 
+           end = end) %>%
+    select(weather_station, 
+           soil, 
+           cultivar, 
+           start, 
+           end, 
+           everything())
+  
+  return(data)
+  
+}
+
+
